@@ -80,23 +80,46 @@ int verifica_se_esta_no_alfabeto(char caractere) {
 int main() {
     int estado_atual = 1;
     int contador = 0;
+    int contador2 = 0;
     int ultimo_estado_final = retorna_estado_final(estado_atual, 0);
+    int tokens_reconhecidos = 0;
+    int i;
 
     char caractere_atual;
     char limite_reconhecido;
+    char token_reconhecido[100];
 
     while(true) {
         limite_reconhecido = getchar();
         if(limite_reconhecido == '\n' || limite_reconhecido == ' ' ) {
             if(contador == -1)
                 continue;
+
+            token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
+
             estado_atual = 1;
             contador = -1;
             
-            printf("%s\n", tokens[ultimo_estado_final]);
+            if(tokens_reconhecidos == 0)
+                printf("%s", tokens[ultimo_estado_final]);
+            else
+                printf("\n%s", tokens[ultimo_estado_final]);
+            
+            if(ultimo_estado_final == 19 || ultimo_estado_final == 22)
+                printf(" %s", token_reconhecido);
+
+            for(i = 0; i <100; i++)
+                token_reconhecido[i] = '\0';
+            contador2 = 0;
+
+            tokens_reconhecidos++;
             ultimo_estado_final = 0;
             continue;
         }
+
+        token_reconhecido[contador2] = limite_reconhecido;
+        contador2++;
+
 
         contador++;
         // Verificacoes do que deve realmente identificar
@@ -104,15 +127,34 @@ int main() {
         if(limite_reconhecido == EOF) {
             if(contador == 0)
                 break;
+
+            token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
             if(verifica_se_estado_final(estado_atual)) {
-                printf("%s\n", tokens[ultimo_estado_final]);
+                if(tokens_reconhecidos == 0)
+                    printf("%s", tokens[ultimo_estado_final]);
+                else
+                    printf("\n%s", tokens[ultimo_estado_final]);
             } else {
                 fseek(stdin, -(contador), SEEK_CUR);
                 estado_atual = 1;
-                printf("%s\n", tokens[ultimo_estado_final]);
+                if(tokens_reconhecidos == 0)
+                    printf("%s", tokens[ultimo_estado_final]);
+                else
+                    printf("\n%s", tokens[ultimo_estado_final]);
+                
+                if(ultimo_estado_final == 19 || ultimo_estado_final == 22)
+                    printf(" %s", token_reconhecido);
+    
+                for(i = 0; i <100; i++)
+                    token_reconhecido[i] = '\0';
+                contador2 = 0;
+
                 limite_reconhecido = getchar();
+                token_reconhecido[contador2] = limite_reconhecido;
+                contador2++;
                 estado_atual = retorna_estado_seguinte(limite_reconhecido, estado_atual);    
             }
+            tokens_reconhecidos++;
             break;
         }
 
@@ -135,11 +177,22 @@ int main() {
 
         if(estado_atual == 0) {
             fseek(stdin, -(contador), SEEK_CUR);
+            token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
             estado_atual = 1;
             contador = -1;
-            
-            printf("%s\n", tokens[ultimo_estado_final]);
+            if(tokens_reconhecidos == 0)
+                printf("%s", tokens[ultimo_estado_final]);
+            else
+                printf("\n%s", tokens[ultimo_estado_final]);
+                
+            if(ultimo_estado_final == 19 || ultimo_estado_final == 22)
+                printf(" %s", token_reconhecido);
+
+            tokens_reconhecidos++;
             ultimo_estado_final = 0;
+            for(i = 0; i <100; i++)
+                token_reconhecido[i] = '\0';
+            contador2 = 0;
         }  
     }
 

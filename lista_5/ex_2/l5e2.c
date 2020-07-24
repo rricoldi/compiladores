@@ -5,9 +5,11 @@
 #define false 0
 #define tamanho_do_alfabeto 41
 #define numero_de_tokens 14
+#define numero_de_estados_finais 11
 
 char alfabeto[] = { '-', ' ', '.', '\n', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 char tokens[][12] = { "", "", "ID", "IF", "ID", "error", "REAL", "NUM", "REAL", "error", "", "comment", "white space", "error" };
+int estados_finais[] = {2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13};
 
 int edges[][tamanho_do_alfabeto] = {
     /*  symbols  -,  , ., \n,     a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z,           0, 1, 2, 3, 4, 5, 6, 7, 8, 9 */
@@ -45,8 +47,8 @@ int retorna_estado_seguinte(char caractere, int estado_atual) {
 
 int verifica_se_estado_final(int estado_atual) {
     int i;
-    for(i = 0; i < tamanho_do_alfabeto; i++) {
-        if(edges[estado_atual][i] == 0)
+    for(i = 0; i < numero_de_estados_finais; i++) {
+        if(estados_finais[i] == estado_atual)
             return true;
     }
     return false;
@@ -72,7 +74,7 @@ int main() {
     int estado_atual = 1;
     int contador = 0;
 
-    int ultimo_estado_final = retorna_estado_final(estado_atual, 0);
+    int ultimo_estado_final = 0;
 
     char inicio_da_cadeia;
     char caractere_atual;
@@ -117,7 +119,7 @@ int main() {
             } else {
                 printf("%s\n", tokens[ultimo_estado_final]);
             }
-            ultimo_estado_final = retorna_estado_final(estado_atual, ultimo_estado_final);
+            ultimo_estado_final = 0;
             estado_atual = retorna_estado_seguinte(limite_reconhecido, estado_atual);
         }
 

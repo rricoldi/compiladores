@@ -79,7 +79,7 @@ int verifica_se_esta_no_alfabeto(char caractere) {
 
 int main() {
     int estado_atual = 1;
-    int contador = 0;
+    int contador = -1;
     int contador2 = 0;
     int ultimo_estado_final = retorna_estado_final(estado_atual, 0);
     int tokens_reconhecidos = 0;
@@ -94,7 +94,7 @@ int main() {
         if(limite_reconhecido == '\n' || limite_reconhecido == ' ' ) {
             if(contador == -1)
                 continue;
-
+            fseek(stdin, -(contador+1), SEEK_CUR);
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
 
             estado_atual = 1;
@@ -134,6 +134,9 @@ int main() {
                     printf("%s", tokens[ultimo_estado_final]);
                 else
                     printf("\n%s", tokens[ultimo_estado_final]);
+
+                if(ultimo_estado_final == 19 || ultimo_estado_final == 22)
+                    printf(" %s", token_reconhecido);
             } else {
                 fseek(stdin, -(contador), SEEK_CUR);
                 estado_atual = 1;

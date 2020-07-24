@@ -6,7 +6,7 @@ for i in $(seq 1 9); do
     then
         echo "test $i failed"
     else
-        echo "test $i succed"
+        echo "test $i succeed"
     fi
     rm saida_0$i.txt
 done
@@ -18,7 +18,7 @@ for i in $(seq 10 20); do
     then
         echo "test $i failed"
     else
-        echo "test $i succed"
+        echo "test $i succeed"
     fi
     rm saida_$i.txt
 done

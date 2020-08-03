@@ -1,0 +1,13 @@
+if(@)
+{
+   a;
+   printf("Adeus mundo \"cruel!\"")
+   //Oi, eu sou um comentario de linha
+   a->[666] += 0x34 + 07 << !2;
+     "picanha" != '@' + de_boi;
+   /* oi, eu sou um
+      comentario de bloco */
+   for(;;){$} +45=-78,0X78+07;
+}
+comment++;/*Isto eh um
+comentario sem fim...

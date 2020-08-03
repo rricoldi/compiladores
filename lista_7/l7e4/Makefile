@@ -13,4 +13,4 @@ $(PROGRAMA): $(LEXICO)
 
 clean:
 	rm -f lex.yy.c
-	rm -f cstats
+	rm -f $(PROGRAMA)

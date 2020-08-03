@@ -4,7 +4,7 @@ CC=gcc
 CFLAGS=
 LIBS=
 
-PROGRAMA = programa
+PROGRAMA = l7e2
 LEXICO = lexico.l
 
 $(PROGRAMA): $(LEXICO)
@@ -13,4 +13,4 @@ $(PROGRAMA): $(LEXICO)
 
 clean:
 	rm -f lex.yy.c
-	rm -f programa
+	rm -f $(PROGRAMA)

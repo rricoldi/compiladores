@@ -1,10 +1,9 @@
 FLEX=flex
-BISON=bison
 CC=gcc
 CFLAGS=
 LIBS=
 
-PROGRAMA = cstats
+PROGRAMA = lexico
 LEXICO = lexico.l
 
 $(PROGRAMA): $(LEXICO)
@@ -13,4 +12,4 @@ $(PROGRAMA): $(LEXICO)
 
 clean:
 	rm -f lex.yy.c
-	rm -f $(PROGRAMA)
+	rm -f lexico.exe lexico

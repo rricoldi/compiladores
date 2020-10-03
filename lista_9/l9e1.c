@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define true 1
 #define false 0
@@ -7,8 +8,10 @@
 #define numero_de_tokens 9
 #define numero_de_estados_finais 10
 
+enum tipos_de_token {IF=1, THEN=2, ELSE=3, BEGIN=4, END=5, PRINT=6, SEMI=7, NUM=8, EQ=9, ERR=0};
+char tokens_escritos[][6] = {"", "if", "then", "else", "begin", "end", "print", ";", "num", "="};
 char alfabeto[] = { '+', '-', '=', ';', 'b', 'd', 'e', 'f', 'g', 'h', 'i', 'l', 'n', 'p', 'r', 's', 't', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-char tokens[][6] = { "erro", "erro", "erro", "NUM", "erro", "IF", "EQ", "erro", "erro", "erro", "THEN", "erro", "erro", "erro", "ELSE", "SEMI", "erro", "erro", "erro", "erro", "BEGIN", "erro", "END", "erro", "erro", "erro", "erro", "PRINT", "NUM" };
+int tokens[] = { ERR, ERR, ERR, NUM, ERR, IF, EQ, ERR, ERR, ERR, THEN, ERR, ERR, ERR, ELSE, SEMI, ERR, ERR, ERR, ERR, BEGIN, ERR, END, ERR, ERR, ERR, ERR, PRINT, NUM };
 int estados_finais[] = { 3, 5, 6, 10, 14, 15, 20, 22, 27, 28 };
 
 int edges[][tamanho_do_alfabeto] = {
@@ -84,6 +87,10 @@ int verifica_se_esta_no_alfabeto(char caractere) {
     return false;   
 }
 
+void S();  //nao_terminal = 0
+void L();  //nao_terminal = 1
+void E();  //nao_terminal = 2
+
 int getToken() {
     int estado_atual = 1;
     int contador = -1;
@@ -104,7 +111,7 @@ int getToken() {
             fseek(stdin, -(contador+1), SEEK_CUR);
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
             
-            return ultimo_estado_final;
+            return tokens[ultimo_estado_final];
         }
 
         token_reconhecido[contador2] = limite_reconhecido;
@@ -116,15 +123,15 @@ int getToken() {
 
         if(limite_reconhecido == EOF) {
             if(contador == 0)
-                return 0;
+                exit(0);
 
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
             if(verifica_se_estado_final(estado_atual)) {
-                return ultimo_estado_final;
+                return tokens[ultimo_estado_final];
 
             } else {
                 fseek(stdin, -(contador), SEEK_CUR);
-                return ultimo_estado_final;
+                return tokens[ultimo_estado_final];
             }
         }
 
@@ -144,18 +151,106 @@ int getToken() {
         if(estado_atual == 0) {
             fseek(stdin, -(contador), SEEK_CUR);
         
-            return ultimo_estado_final;
+            return tokens[ultimo_estado_final];
         }  
     }
 }
 
-int main() {
-    printf("%s ", tokens[getToken()]);
-    printf("%s ", tokens[getToken()]);
-    printf("%s ", tokens[getToken()]);
-    printf("%s ", tokens[getToken()]);
-    printf("%s ", tokens[getToken()]);
-    printf("%s ", tokens[getToken()]);
+int token;
+int primeiro = true;
+int erro = false;
+int tipo_do_erro;
 
+void success() {
+    if(!primeiro) {        
+        printf("\n");
+    } else {
+        primeiro = false;
+    }
+    printf("CADEIA ACEITA");
+}
+
+void error() {
+    erro = true;
+
+    if(!primeiro) {
+        printf("\n");
+    } else {
+        primeiro = false;
+    }
+    
+    printf("ERRO SINTATICO EM: %s ESPERADO: ", tokens_escritos[token]);
+    switch (tipo_do_erro) {
+        case 0:
+            printf("if, begin, print");
+            break;
+        case 1:
+            printf("end, ;");
+            break;
+        case 2:
+            printf("num");
+            break;
+        case 3:
+            printf("CADEIA INCOMPLETA");
+            break;
+    }       
+
+}
+
+void advance() {
+    token = getToken();
+}
+
+void eat(int t) {
+    if (token == t) {
+        advance();
+    } else {        
+        error();
+    }
+}
+
+void lida_com_erro() {
+    char letra;
+    while(true) {
+        letra = getchar();
+        if(letra == '\n' || letra == EOF)
+            break;
+    }
+}
+
+void S(){
+    erro=false;
+    tipo_do_erro = 3;
+    switch(token) {
+        case IF: eat(IF); if(erro) { lida_com_erro(); break; } E(); (THEN); if(erro) { lida_com_erro(); break; } S(); (ELSE); if(erro) { lida_com_erro(); break; } S(); success(); break;
+        case BEGIN: eat(BEGIN); if(erro) { lida_com_erro(); break; } S(); L(); success(); break;
+        case PRINT: eat(PRINT); if(erro) { lida_com_erro(); break; } E(); success(); break;
+        default: tipo_do_erro = 0; error(); 
+    }
+}
+void L(){
+    switch(token) {
+        case END: eat(END); if(erro) { lida_com_erro(); break; } success(); break;
+        case SEMI: eat(SEMI); if(erro) { lida_com_erro(); break; } S(); L(); success(); break;
+        default: tipo_do_erro = 1; error(); 
+    }
+}
+void E(){ 
+    switch(token) {
+        case NUM: eat(NUM); if(erro) { lida_com_erro(); break; } eat(EQ); if(erro) { lida_com_erro(); break; } eat(NUM); if(erro) { lida_com_erro(); break; } success(); break;
+        default: tipo_do_erro = 2; error(); 
+    }
+    return;
+}
+
+
+int main() {
+    token = getToken();
+
+    while(true) {
+        S();
+        token = getToken();
+    }
+    
     return 0;
 }

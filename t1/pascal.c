@@ -4,15 +4,15 @@
 
 #define true 1
 #define false 0
-#define tamanho_do_alfabeto 62
-#define numero_de_tokens 9
-#define numero_de_estados_finais 10
+#define tamanho_do_alfabeto 79
+#define numero_de_tokens 32
+#define numero_de_estados_finais 83
 
-enum tipos_de_token {IF=1, THEN=2, ELSE=3, BEGIN=4, END=5, PRINT=6, SEMI=7, NUM=8, EQ=9, ERR=0};
+enum tipos_de_token { ERR = 0, VAR, PROC, FUNC, BEGIN, END, LPAREN, RPAREN, LBRAC, RBRAC, ATRIB, IF, THEN, ELSE, WHILE, DO, EQ, DIF, G, L, GE, LE, PLUS, MINUS, OR, PTR, DIV, AND, NOT, PROGRAM, COMMENT, NUMBER, ID };
 char tokens_escritos[][6] = {"", "if", "then", "else", "begin", "end", "print", ";", "num", "="};
 char alfabeto[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '(', ')', '[', ']', ':', '.', ';', ',', '=', '{', '}', '<', '>', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '+', '-' };
-int tokens[] = { ERR, ERR, ERR, NUM, ERR, IF, EQ, ERR, ERR, ERR, THEN, ERR, ERR, ERR, ELSE, SEMI, ERR, ERR, ERR, ERR, BEGIN, ERR, END, ERR, ERR, ERR, ERR, PRINT, NUM };
-int estados_finais[] = { 3, 5, 6, 10, 14, 15, 20, 22, 27, 28 };
+// int tokens[] = { ERR, ERR, ERR, NUM, ERR, IF, EQ, ERR, ERR, ERR, THEN, ERR, ERR, ERR, ELSE, SEMI, ERR, ERR, ERR, ERR, BEGIN, ERR, END, ERR, ERR, ERR, ERR, PRINT, NUM };
+int estados_finais[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 87 };
 
 int edges[][tamanho_do_alfabeto] = {
     /*symbols      a,   b,   c,   d,   e,   f,   g,   h,   i,   j,   k,   l,   m,   n,   o,   p,   q,   r,   s,   t,   u,   v,   w,   x,   y,   z,   A,   B,   C,   D,   E,   F,   G,   H,   I,   J,   K,   L,   M,   N,   O,   P,   Q,   R,   S,   T,   U,   V,   W,   X,   Y,   Z,   _,   (,   ),   [,   ],   :,   .,   ;, ",",   =,   {,   },   <,   >,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,   *,   +,   - */
@@ -39,6 +39,7 @@ int edges[][tamanho_do_alfabeto] = {
     /*state 20*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 21*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  22,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  22,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 22*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  23,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  23,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
+    /*state 23*/ {11,  11,  24,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  24,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 24*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  25,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  25,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 25*/ {11,  11,  11,  11,  11,  11,  11,  11,  26,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  26,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 26*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  27,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  27,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
@@ -145,10 +146,6 @@ int verifica_se_esta_no_alfabeto(char caractere) {
     return false;   
 }
 
-void S();  //nao_terminal = 0
-void L();  //nao_terminal = 1
-void E();  //nao_terminal = 2
-
 int getToken() {
     int estado_atual = 1;
     int contador = -1;
@@ -161,15 +158,22 @@ int getToken() {
     char limite_reconhecido;
     char token_reconhecido[100];
 
+    for(i=0;i<100;i++) {
+        token_reconhecido[i] = 0;
+    }
+
     while(true) {
         limite_reconhecido = getchar();
         if(limite_reconhecido == '\n' || limite_reconhecido == ' ' ) {
             if(contador == -1)
                 continue;
-            fseek(stdin, -(contador+1), SEEK_CUR);
+            if(contador != 0)
+                fseek(stdin, -(contador+1), SEEK_CUR);
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
+            printf("%s\n", token_reconhecido);
+
             
-            return tokens[ultimo_estado_final];
+            return ultimo_estado_final;
         }
 
         token_reconhecido[contador2] = limite_reconhecido;
@@ -184,12 +188,13 @@ int getToken() {
                 exit(0);
 
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
+            printf("%s\n", token_reconhecido);
             if(verifica_se_estado_final(estado_atual)) {
-                return tokens[ultimo_estado_final];
+                return ultimo_estado_final;
 
             } else {
                 fseek(stdin, -(contador), SEEK_CUR);
-                return tokens[ultimo_estado_final];
+                return ultimo_estado_final;
             }
         }
 
@@ -208,107 +213,22 @@ int getToken() {
 
         if(estado_atual == 0) {
             fseek(stdin, -(contador), SEEK_CUR);
+            token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
+            printf("%s\n", token_reconhecido);
+
+
         
-            return tokens[ultimo_estado_final];
+            return ultimo_estado_final;
         }  
     }
 }
 
-int token;
-int primeiro = true;
-int erro = false;
-int tipo_do_erro;
-
-void success() {
-    if(!primeiro) {        
-        printf("\n");
-    } else {
-        primeiro = false;
-    }
-    printf("CADEIA ACEITA");
-}
-
-void error() {
-    erro = true;
-
-    if(!primeiro) {
-        printf("\n");
-    } else {
-        primeiro = false;
-    }
-    
-    printf("ERRO SINTATICO EM: %s ESPERADO: ", tokens_escritos[token]);
-    switch (tipo_do_erro) {
-        case 0:
-            printf("if, begin, print");
-            break;
-        case 1:
-            printf("end, ;");
-            break;
-        case 2:
-            printf("num");
-            break;
-        case 3:
-            printf("CADEIA INCOMPLETA");
-            break;
-    }       
-
-}
-
-void advance() {
-    token = getToken();
-}
-
-void eat(int t) {
-    if (token == t) {
-        advance();
-    } else {        
-        error();
-    }
-}
-
-void lida_com_erro() {
-    char letra;
-    while(true) {
-        letra = getchar();
-        if(letra == '\n' || letra == EOF)
-            break;
-    }
-}
-
-void S(){
-    erro=false;
-    tipo_do_erro = 3;
-    switch(token) {
-        case IF: eat(IF); if(erro) { lida_com_erro(); break; } E(); (THEN); if(erro) { lida_com_erro(); break; } S(); (ELSE); if(erro) { lida_com_erro(); break; } S(); success(); break;
-        case BEGIN: eat(BEGIN); if(erro) { lida_com_erro(); break; } S(); L(); success(); break;
-        case PRINT: eat(PRINT); if(erro) { lida_com_erro(); break; } E(); success(); break;
-        default: tipo_do_erro = 0; error(); 
-    }
-}
-void L(){
-    switch(token) {
-        case END: eat(END); if(erro) { lida_com_erro(); break; } success(); break;
-        case SEMI: eat(SEMI); if(erro) { lida_com_erro(); break; } S(); L(); success(); break;
-        default: tipo_do_erro = 1; error(); 
-    }
-}
-void E(){ 
-    switch(token) {
-        case NUM: eat(NUM); if(erro) { lida_com_erro(); break; } eat(EQ); if(erro) { lida_com_erro(); break; } eat(NUM); if(erro) { lida_com_erro(); break; } success(); break;
-        default: tipo_do_erro = 2; error(); 
-    }
-    return;
-}
-
-
 int main() {
-    token = getToken();
-
-    while(true) {
-        S();
+    int token;
+    while (true) {
         token = getToken();
     }
+    
     
     return 0;
 }

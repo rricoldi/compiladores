@@ -1,0 +1,126 @@
+# Programa =================================================================================#
+
+Programa => program identificador ; Bloco .
+
+# Bloco =================================================================================#
+
+Bloco => K
+
+K => var I
+
+L => procedure identificador Parametros_Formais ; Bloco ; O
+
+M => function identificador Parametros_Formais : identificador ; Bloco ; O
+
+N => begin P end
+
+P => Comando ;
+P => Comando
+
+O => L
+O => M
+O => N
+
+
+I => J : Tipo ; I
+I => J : Tipo ;
+
+J => identificador ,
+J => identificador
+
+# Tipo =================================================================================#
+
+Tipo => identificador
+Tipo => Constante .. Constante
+
+# Parâmetros Formais =================================================================================#
+
+Parametros_Formais => ( G )
+Parametros_Formais => 
+
+G => var H : identificador G
+G => H : identificador G
+
+H => identificador , H
+H => identificador
+
+
+# Variável =================================================================================#
+
+    Variavel => identificador D
+
+    D => [ E ]
+    D => 
+
+    E => Expressao
+    E => Expressao , E  
+
+# Comando =================================================================================#
+
+    Comando => Variavel := Expressao
+    Comando => identificador Q
+    Comando => begin S end
+    Comando => if Expressao then begin S end T
+    Comando => while Expressao do Comando
+    Comando => 
+
+    Q => ( R )
+    Q => 
+
+    R => Expressao , R
+    R => Expressao
+
+    S => Comando ; S
+    S => Comando
+
+    T => else begin S end
+    T => 
+
+# Expressão =================================================================================#
+
+Expressao => Expressao_simples
+Expressao => Expressao = Expressao_simples
+Expressao => Expressao <> Expressao_simples
+Expressao => Expressao < Expressao_simples
+Expressao => Expressao <= Expressao_simples
+Expressao => Expressao > Expressao_simples
+Expressao => Expressao >= Expressao_simples
+
+# Expressão Simples =================================================================================#
+
+Expressao_simples => + Termo B
+Expressao_simples => - Termo B
+Expressao_simples => Termo B
+
+B => + Termo B
+B => - Termo B
+B => or Termo B
+B => 
+
+# Termo =================================================================================#
+
+Termo => Fator
+Termo => Fator * Termo
+Termo => Fator div Termo
+Termo => Fator and Termo
+
+# Fator =================================================================================#
+
+Fator => Variavel
+Fator => numero
+Fator => identificador ( C )
+Fator => ( Expressao )
+Fator => not Fator
+
+C => F
+C =>
+
+F => Expressao , F
+F => Expressao 
+
+# Constante =================================================================================#
+
+Constante => identificador
+Constante => + numero
+Constante => - numero
+Constante => numero

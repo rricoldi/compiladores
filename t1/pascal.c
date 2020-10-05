@@ -9,7 +9,7 @@
 #define numero_de_estados_finais 82
 
 enum tipos_de_token { ERR = 0, VAR, PROC, FUNC, BEGIN, END, LPAREN, RPAREN, LBRAC, RBRAC, ATRIB, IF, THEN, ELSE, WHILE, DO, EQ, DIF, G, L, GE, LE, PLUS, MINUS, OR, PTR, DIV, AND, NOT, PROGRAM, COMMENT, NUMBER, ID, DOT, DDOT, COMMA, COLLON, SCOLLON };
-char tokens_escritos[][10] = {"erro", "var", "procedure", "function", "begin", "end", "(", ")", "[", "]", ":=", "if", "then", "else", "while", "do", "=", "<>", ">", "<", ">=", "<=", "+", "-", "or", "*", "div", "and", "not", "program", "comment", "number", "id", ".", "..", ",", ":", ";" };
+char tokens_escritos[][15] = {"erro", "var", "procedure", "function", "begin", "end", "(", ")", "[", "]", ":=", "if", "then", "else", "while", "do", "=", "<>", ">", "<", ">=", "<=", "+", "-", "or", "*", "div", "and", "not", "program", "comment", "numero", "identificador", ".", "..", ",", ":", ";" };
 char alfabeto[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '(', ')', '[', ']', ':', '.', ';', ',', '=', '{', '}', '<', '>', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '+', '-' };
 int tokens[] = { ERR, ERR, ID, ID, AND, ID, ID, ID, ID, BEGIN, ID, ID, ID, ID, DIV, ID, ID, ID, ELSE, ID, END, ID, ID, ID, ID, ID, ID, ID, FUNC, DOT, COMMA, SCOLLON, COLLON, DDOT, ATRIB, DO, L, G, PTR, DIF, LE, GE, PLUS, MINUS, LPAREN, RPAREN, LBRAC, RBRAC, ERR, ERR, ERR, COMMENT, NUMBER, ID, IF, ID, ID, NOT, ID, OR, ID, ID, ID, THEN, ID, ID, ID, ID, ID, ID, ID, ID, PROC, ID, ID, ID, PROGRAM, ID, ID, ID, ID, WHILE, ID, ID, VAR, EQ, ERR, COMMENT };
 int estados_finais[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 87 };
@@ -176,7 +176,7 @@ int getToken() {
         }
         if(limite_reconhecido == '\n' || limite_reconhecido == ' ' ) {
             if(contador == -1)
-                return 1;
+                continue;
             if(contador != 0) {
                 fseek(stdin, -(contador+1), SEEK_CUR);
                 coluna -= contador-1;
@@ -235,10 +235,11 @@ int main() {
     int token;
     while (true) {
         token = getToken();
-        if(token == 0) {
-            printf("ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
-            return 0;
-        }
+        printf("%s ", tokens_escritos[token]);
+        // if(token == 0) {
+        //     printf("ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
+        //     return 0;
+        // }
 
         if(limite_reconhecido == EOF) {
             printf("PROGRAMA CORRETO.");

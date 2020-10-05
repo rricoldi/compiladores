@@ -1,126 +1,114 @@
-# Programa =================================================================================#
+    Programa ::= program identificador ; Bloco .
 
-Programa => program identificador ; Bloco .
+    Bloco ::= K
 
-# Bloco =================================================================================#
+    K ::= var identificador J : Tipo ; I  O
 
-Bloco => K
+    L ::= procedure identificador Parametros_Formais ; Bloco ; O
 
-K => var I
+    M ::= function identificador Parametros_Formais : identificador ; Bloco ; O
 
-L => procedure identificador Parametros_Formais ; Bloco ; O
+    N ::= begin Comando P end
 
-M => function identificador Parametros_Formais : identificador ; Bloco ; O
+    P ::= ; Comando P
+    P ::= ''
 
-N => begin P end
-
-P => Comando ;
-P => Comando
-
-O => L
-O => M
-O => N
+    O ::= L
+    O ::= M
+    O ::= N
 
 
-I => J : Tipo ; I
-I => J : Tipo ;
+    I ::= identificador J : Tipo ; I
+    I ::= ''
 
-J => identificador ,
-J => identificador
+    J ::= , identificador J
+    J ::= ''
 
-# Tipo =================================================================================#
+    Tipo ::= identificador Constante
+    Tipo ::= + numero Constante
+    Tipo ::= - numero Constante
+    Tipo ::= numero Constante
 
-Tipo => identificador
-Tipo => Constante .. Constante
+    Constante ::= .. Z
+    Constante ::= ''
 
-# Parâmetros Formais =================================================================================#
+    Z ::= + numero
+    Z ::= - numero
+    Z ::= numero
+    Z ::= identificador
 
-Parametros_Formais => ( G )
-Parametros_Formais => 
+    Parametros_Formais ::= ( G )
+    Parametros_Formais ::= 
 
-G => var H : identificador G
-G => H : identificador G
+    G ::= var identificador : identificador G
+    G ::= H : identificador G
 
-H => identificador , H
-H => identificador
+    H ::= , identificador H
+    H ::= ''
 
+    D ::= := Expressao
+    D ::= Q
+    D ::= ''
 
-# Variável =================================================================================#
+    Variavel ::= [ Expressao E ]
+    Variavel ::= ''
 
-    Variavel => identificador D
+    E ::= , Expressao E
+    E ::= '' 
 
-    D => [ E ]
-    D => 
+    Comando ::= identificador Variavel D
+    Comando ::= begin Comando U end
+    Comando ::= if Expressao then begin Comando U end T
+    Comando ::= while Expressao do Comando
+    Comando ::= ''
 
-    E => Expressao
-    E => Expressao , E  
+    Q ::= ( Expressao R )
 
-# Comando =================================================================================#
+    R ::= , Expressao R
+    R ::= ''
 
-    Comando => Variavel := Expressao
-    Comando => identificador Q
-    Comando => begin S end
-    Comando => if Expressao then begin S end T
-    Comando => while Expressao do Comando
-    Comando => 
+    U ::= ; Comando U
+    U ::= ''
 
-    Q => ( R )
-    Q => 
+    T ::= else begin Comando U end
+    T ::= ''
 
-    R => Expressao , R
-    R => Expressao
+    Expressao ::= Expressao_simples Operador
 
-    S => Comando ; S
-    S => Comando
+    Operador ::= = Expressao_simples
+    Operador ::= <> Expressao_simples
+    Operador ::= < Expressao_simples
+    Operador ::= <= Expressao_simples
+    Operador ::= > Expressao_simples
+    Operador ::= >= Expressao_simples
+    Operador ::= ''
 
-    T => else begin S end
-    T => 
+    Expressao_simples ::= + Termo B
+    Expressao_simples ::= - Termo B
+    Expressao_simples ::= Termo B
 
-# Expressão =================================================================================#
+    B ::= + Termo B
+    B ::= - Termo B
+    B ::= or Termo B
+    B ::= ''
 
-Expressao => Expressao_simples
-Expressao => Expressao = Expressao_simples
-Expressao => Expressao <> Expressao_simples
-Expressao => Expressao < Expressao_simples
-Expressao => Expressao <= Expressao_simples
-Expressao => Expressao > Expressao_simples
-Expressao => Expressao >= Expressao_simples
+    Termo ::= Fator AA
 
-# Expressão Simples =================================================================================#
+    AA ::= * Termo
+    AA ::= div Termo
+    AA ::= and Termo
+    AA ::= ''
 
-Expressao_simples => + Termo B
-Expressao_simples => - Termo B
-Expressao_simples => Termo B
+    V ::= ( C )
+    V ::= ''
 
-B => + Termo B
-B => - Termo B
-B => or Termo B
-B => 
+    Fator ::= numero
+    Fator ::= identificador Variavel V
+    Fator ::= ( Expressao )
+    Fator ::= not Fator
 
-# Termo =================================================================================#
+    C ::= Expressao F
+    C ::= ''
 
-Termo => Fator
-Termo => Fator * Termo
-Termo => Fator div Termo
-Termo => Fator and Termo
-
-# Fator =================================================================================#
-
-Fator => Variavel
-Fator => numero
-Fator => identificador ( C )
-Fator => ( Expressao )
-Fator => not Fator
-
-C => F
-C =>
-
-F => Expressao , F
-F => Expressao 
-
-# Constante =================================================================================#
-
-Constante => identificador
-Constante => + numero
-Constante => - numero
-Constante => numero
+    F ::= , Expressao F
+    F ::=   '' 

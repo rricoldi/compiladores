@@ -41,7 +41,7 @@
     Parametros_Formais ::= 
 
     G ::= var identificador : identificador G
-    G ::= H : identificador G
+    G ::= identificador H : identificador G
 
     H ::= , identificador H
     H ::= ''

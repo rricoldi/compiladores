@@ -8,10 +8,10 @@
 #define numero_de_tokens 37
 #define numero_de_estados_finais 82
 
-enum tipos_de_token { ERR = 0, VAR, PROC, FUNC, BEGIN, END, LPAREN, RPAREN, LBRAC, RBRAC, ATRIB, IF, THEN, ELSE, WHILE, DO, EQ, DIF, G, L, GE, LE, PLUS, MINUS, OR, PTR, DIV, AND, NOT, PROGRAM, COMMENT, NUMBER, ID, DOT, DDOT, COMMA, COLLON, SCOLLON };
+enum tipos_de_token { ERR = 0, VAR, PROC, FUNC, BEGIN, END, LPAREN, RPAREN, LBRAC, RBRAC, ATRIB, IF, THEN, ELSE, WHILE, DO, EQ, DIF, GREATER, LESS, GE, LE, PLUS, MINUS, OR, PTR, DIV, AND, NOT, PROGRAM, COMMENT, NUMBER, ID, DOT, DDOT, COMMA, COLLON, SCOLLON };
 char tokens_escritos[][15] = {"erro", "var", "procedure", "function", "begin", "end", "(", ")", "[", "]", ":=", "if", "then", "else", "while", "do", "=", "<>", ">", "<", ">=", "<=", "+", "-", "or", "*", "div", "and", "not", "program", "comment", "numero", "identificador", ".", "..", ",", ":", ";" };
 char alfabeto[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_', '(', ')', '[', ']', ':', '.', ';', ',', '=', '{', '}', '<', '>', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '+', '-' };
-int tokens[] = { ERR, ERR, ID, ID, AND, ID, ID, ID, ID, BEGIN, ID, ID, ID, ID, DIV, ID, ID, ID, ELSE, ID, END, ID, ID, ID, ID, ID, ID, ID, FUNC, DOT, COMMA, SCOLLON, COLLON, DDOT, ATRIB, DO, L, G, PTR, DIF, LE, GE, PLUS, MINUS, LPAREN, RPAREN, LBRAC, RBRAC, ERR, ERR, ERR, COMMENT, NUMBER, ID, IF, ID, ID, NOT, ID, OR, ID, ID, ID, THEN, ID, ID, ID, ID, ID, ID, ID, ID, PROC, ID, ID, ID, PROGRAM, ID, ID, ID, ID, WHILE, ID, ID, VAR, EQ, ERR, COMMENT };
+int tokens[] = { ERR, ERR, ID, ID, AND, ID, ID, ID, ID, BEGIN, ID, ID, ID, ID, DIV, ID, ID, ID, ELSE, ID, END, ID, ID, ID, ID, ID, ID, ID, FUNC, DOT, COMMA, SCOLLON, COLLON, DDOT, ATRIB, DO, LESS, GREATER, PTR, DIF, LE, GE, PLUS, MINUS, LPAREN, RPAREN, LBRAC, RBRAC, ERR, ERR, ERR, COMMENT, NUMBER, ID, IF, ID, ID, NOT, ID, OR, ID, ID, ID, THEN, ID, ID, ID, ID, ID, ID, ID, ID, PROC, ID, ID, ID, PROGRAM, ID, ID, ID, ID, WHILE, ID, ID, VAR, EQ, ERR, COMMENT };
 int estados_finais[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 87 };
 
 int edges[][tamanho_do_alfabeto] = {
@@ -66,7 +66,7 @@ int edges[][tamanho_do_alfabeto] = {
     /*state 47*/ { 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 }, 
     /*state 48*/ {49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49 }, 
     /*state 49*/ {49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  50,  49,  49 }, 
-    /*state 50*/ {49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  51,  49,  49,  49,  49,  49,  49,  49,  49,  87,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49 }, 
+    /*state 50*/ {49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  51,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49,  49 }, 
     /*state 51*/ { 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 }, 
     /*state 52*/ { 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  52,  52,  52,  52,  52,  52,  52,  52,  52,  52,   0,   0,   0 }, 
     /*state 53*/ {11,  11,  11,  11,  11,  54,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  54,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
@@ -102,13 +102,16 @@ int edges[][tamanho_do_alfabeto] = {
     /*state 83*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  84,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  84,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 84*/ {11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,   0,   0,   0 }, 
     /*state 85*/ {0,    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 }, 
-    /*state 86*/ {0,    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  48,   0,   0 }, 
+    /*state 86*/ {88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  87,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88 }, 
     /*state 87*/ {0,    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 }, 
+    /*state 88*/ {88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  87,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88,  88 }
 };
 
 int linha = 1;
 int coluna = 0;
 char limite_reconhecido;
+char token_reconhecido[100];
+int token;
 
 
 int retorna_estado_seguinte(char caractere, int estado_atual) {
@@ -159,7 +162,6 @@ int getToken() {
     int i;
 
     char caractere_atual;
-    char token_reconhecido[100];
 
     for(i=0;i<100;i++) {
         token_reconhecido[i] = 0;
@@ -177,6 +179,10 @@ int getToken() {
         if(limite_reconhecido == '\n' || limite_reconhecido == ' ' ) {
             if(contador == -1)
                 continue;
+
+            if(estado_atual == 48 || estado_atual == 49 || estado_atual == 50 || estado_atual == 86 || estado_atual == 87 || estado_atual == 88)
+                continue;
+
             if(contador != 0) {
                 fseek(stdin, -(contador+1), SEEK_CUR);
                 coluna -= contador-1;
@@ -220,7 +226,6 @@ int getToken() {
             contador = 0;
         }
 
-
         if(estado_atual == 0) {
             fseek(stdin, -(contador), SEEK_CUR);
             coluna -= contador;
@@ -231,21 +236,322 @@ int getToken() {
     }
 }
 
-int main() {
-    int token;
-    while (true) {
-        token = getToken();
-        printf("%s ", tokens_escritos[token]);
-        // if(token == 0) {
-        //     printf("ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
-        //     return 0;
-        // }
-
-        if(limite_reconhecido == EOF) {
-            printf("PROGRAMA CORRETO.");
-            return 0;
-        }
+void advance() {
+    token = getToken();
+    if(token == 0) {
+        printf(" ADVANCE ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
+        exit(0);
     }
+}
+
+void eat(int t) {
+    // printf("eaten %s\n", tokens_escritos[t]);
+    if (token == t) {
+        advance();
+    } else {                
+        printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); 
+        exit(0);
+    }
+}
+
+void Programa();
+void Bloco();
+void K();
+void L();
+void M();
+void N();
+void P();
+void O();
+void I();
+void J();
+void Tipo();
+void Constante();
+void Z();
+void Parametros_Formais();
+void G();
+void H();
+void D();
+void Variavel();
+void E();
+void Comando();
+void Q();
+void R();
+void U();
+void T();
+void Expressao();
+void Operador();
+void Expressao_Simples();
+void B();
+void Termo();
+void AA();
+void V();
+void Fator();
+void C();
+void F();
+
+
+void Programa() {
+    switch(token) {
+        case PROGRAM: eat(PROGRAM); eat(ID); eat(SCOLLON); Bloco(); eat(DOT); printf("PROGRAMA CORRETO."); exit(0);
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void Bloco() {
+    K();
+}
+
+void K() {
+    switch(token) {
+        case VAR: eat(VAR); eat(ID); J(); eat(COLLON); Tipo(); eat(SCOLLON); I(); O(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void L() {
+    switch(token) {
+        case PROC: eat(PROC); eat(ID); Parametros_Formais(); eat(SCOLLON); Bloco(); eat(SCOLLON); O(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void M() {
+    switch(token) {
+        case FUNC: eat(FUNC); eat(ID); Parametros_Formais(); eat(COLLON); eat(ID); eat(SCOLLON); Bloco(); eat(SCOLLON); O(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void N() {
+    switch(token) {
+        case BEGIN: eat(BEGIN); Comando(); P(); eat(END); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void P() {
+    switch(token) {
+        case SCOLLON: eat(SCOLLON); Comando(); P(); break;
+    }
+}
+
+void O() {
+    switch(token) {
+        case PROC: L(); break;
+        case FUNC: M(); break;
+        case BEGIN: N(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void I() {
+    switch(token) {
+        case ID: eat(ID); J(); eat(COLLON); Tipo(); eat(SCOLLON); I(); break;
+    }
+}
+
+void J() {
+    switch(token) {
+        case COMMA: eat(COMMA); eat(ID); J(); break;
+    }
+}
+
+void Tipo() {
+    switch(token) {
+        case ID: eat(ID); Constante(); break;
+        case PLUS: eat(PLUS); eat(NUMBER); Constante(); break;
+        case MINUS: eat(MINUS); eat(NUMBER); Constante(); break;
+        case NUMBER: eat(NUMBER); Constante(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void Constante() {
+    switch (token) {
+        case DDOT: eat(DDOT); Z();
+    }
+}
+
+void Z() {
+    switch(token) {
+        case ID: eat(ID); break;
+        case PLUS: eat(PLUS); eat(NUMBER); break;
+        case MINUS: eat(MINUS); eat(NUMBER); break;
+        case NUMBER: eat(NUMBER); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void Parametros_Formais() {
+    switch (token) {
+        case LPAREN: eat(LPAREN); G(); eat(RPAREN);
+    }
+}
+
+void G() {
+    switch(token) {
+        case VAR: eat(VAR); eat(ID); eat(COLLON); eat(ID); G(); break;
+        case ID: eat(ID); H(); eat(ID); G(); break;            
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void H() {
+    switch (token) {
+        case COMMA: eat(COMMA); eat(ID); H();
+    }
+}
+
+void D() {
+    switch (token) {
+        case ATRIB: eat(ATRIB); Expressao(); break;
+        case LPAREN: Q(); break;
+    }
+}
+
+void Variavel() {
+    switch (token) {
+        case LBRAC: eat(LBRAC); Expressao(); E(); eat(RBRAC); break;
+    }
+}
+
+void E() {
+    switch (token) {
+        case COMMA: eat(COMMA); Expressao(); E();
+    }
+}
+
+void Comando() {
+    switch (token) {
+        case ID: eat(ID); Variavel(); D(); break;
+        case BEGIN: eat(BEGIN); Comando(); U(); eat(END); break;
+        case IF: eat(IF); Expressao(); eat(THEN); eat(BEGIN); Comando(); U(); eat(END); T(); break;
+        case WHILE: eat(WHILE); Expressao(); eat(DO); Comando(); break;
+    }
+}
+
+void Q() {
+    switch(token) {
+        case LPAREN: eat(LPAREN); Expressao(); R(); eat(RPAREN); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void R() {
+    switch(token) {
+        case COMMA: eat(COMMA); Expressao(); R();
+    }
+}
+
+void U() {
+    switch(token) {
+        case SCOLLON: eat(SCOLLON); Comando(); U();
+    }
+}
+
+void T() {
+    switch(token) {
+        case ELSE: eat(ELSE); eat(BEGIN); Comando(); U(); eat(END);
+    }
+}
+
+void Expressao() {
+    switch(token) {
+        case PLUS:
+        case MINUS:
+        case NUMBER:
+        case ID:
+        case LPAREN:
+        case NOT: Expressao_Simples(); Operador(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido);         exit(0);
+    }
+}
+
+void Operador() {
+    switch(token) {
+        case EQ: eat(EQ); Expressao_Simples(); break;
+        case DIF: eat(DIF); Expressao_Simples(); break;
+        case LESS: eat(LESS); Expressao_Simples(); break;
+        case LE: eat(LE); Expressao_Simples(); break;
+        case GREATER: eat(GREATER); Expressao_Simples(); break;
+        case GE: eat(GE); Expressao_Simples(); break;
+    }
+}
+
+void Expressao_Simples() {
+    switch(token) {
+        case PLUS: eat(PLUS); Termo(); B(); break;
+        case MINUS: eat(MINUS); Termo(); B(); break;
+        case NUMBER:
+        case ID:
+        case LPAREN:
+        case NOT: Termo(); B(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido);         exit(0);
+    }
+}
+
+void B() {
+    switch(token) {
+        case PLUS: eat(PLUS); Termo(); B(); break;
+        case MINUS: eat(MINUS); Termo(); B(); break;
+        case OR: eat(OR); Termo(); B(); break;
+    }
+}
+
+void Termo() {
+    switch(token) {
+        case NUMBER:
+        case ID:
+        case LPAREN:
+        case NOT: Fator(); AA(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido);         exit(0);
+    }
+}
+
+void AA() {
+    switch(token) {
+        case PTR: eat(PTR); Termo(); break;
+        case DIV: eat(DIV); Termo(); break;
+        case AND: eat(AND); Termo(); break;
+    }
+}
+
+void V() {
+    switch(token) {
+        case LPAREN: eat(LPAREN); C(); eat(RPAREN);
+    }
+}
+
+void Fator() {
+    switch(token) {
+        case NUMBER: eat(NUMBER); break;
+        case ID: eat(ID); Variavel(); V(); break;
+        case LPAREN: eat(LPAREN); Expressao(); eat(RPAREN); break;
+        case NOT: eat(NOT); Fator(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido);         exit(0);
+    }
+}
+
+void C() {
+    switch(token) {
+        case PLUS:
+        case MINUS:
+        case NUMBER:
+        case ID:
+        case LPAREN:
+        case NOT: Expressao(); F(); break;
+    }
+}
+
+void F() {
+    switch(token) {
+        case COMMA: eat(COMMA); Expressao(); F();
+    }
+}
+
+int main() {
+    token = getToken();
+    Programa();
         
     return 0;
 }

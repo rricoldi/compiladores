@@ -239,7 +239,7 @@ int getToken() {
 void advance() {
     token = getToken();
     if(token == 0) {
-        printf(" ADVANCE ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
+        printf("ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
         exit(0);
     }
 }

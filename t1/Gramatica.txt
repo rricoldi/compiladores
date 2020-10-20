@@ -1,6 +1,9 @@
     Programa ::= program identificador ; Bloco .
 
     Bloco ::= K
+    Bloco ::= L
+    Bloco ::= M
+    Bloco ::= N
 
     K ::= var identificador J : Tipo ; I  O
 
@@ -40,8 +43,11 @@
     Parametros_Formais ::= ( G )
     Parametros_Formais ::= 
 
-    G ::= var identificador : identificador G
-    G ::= identificador H : identificador G
+    G ::= var identificador : identificador GG
+    G ::= identificador H : identificador GG
+
+    GG ::= ; G
+    GG ::= ''
 
     H ::= , identificador H
     H ::= ''

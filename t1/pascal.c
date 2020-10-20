@@ -109,6 +109,7 @@ int edges[][tamanho_do_alfabeto] = {
 
 int linha = 1;
 int coluna = 0;
+int contador_linha = 1;
 char limite_reconhecido;
 char token_reconhecido[100];
 int token;
@@ -160,7 +161,6 @@ int getToken() {
     int aux;
     int tokens_reconhecidos = 0;
     int i;
-
     char caractere_atual;
 
     for(i=0;i<100;i++) {
@@ -169,10 +169,10 @@ int getToken() {
 
     while(true) {
         limite_reconhecido = getchar();
-        
+        linha = contador_linha;
         if(limite_reconhecido == '\n') {
             coluna = 0;
-            linha++;
+            contador_linha++;
         } else {
             coluna++;
         }
@@ -238,6 +238,7 @@ int getToken() {
 
 void advance() {
     token = getToken();
+    // printf("%s ", tokens_escritos[token]);   
     if(token == 0) {
         printf("ERRO LEXICO. LINHA: %d Coluna: %d -> %c", linha, coluna, limite_reconhecido);
         exit(0);
@@ -245,7 +246,8 @@ void advance() {
 }
 
 void eat(int t) {
-    // printf("eaten %s\n", tokens_escritos[t]);
+    // printf("%s == %s ", tokens_escritos[t], tokens_escritos[token]);
+    // printf("%s ", tokens_escritos[token]);
     if (token == t) {
         advance();
     } else {                
@@ -269,6 +271,7 @@ void Constante();
 void Z();
 void Parametros_Formais();
 void G();
+void GG();
 void H();
 void D();
 void Variavel();
@@ -298,7 +301,13 @@ void Programa() {
 }
 
 void Bloco() {
-    K();
+    switch(token) {
+        case VAR: K(); break;
+        case PROC: O(); break;
+        case FUNC: O(); break;
+        case BEGIN: O(); break;
+        default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
 }
 
 void K() {
@@ -390,9 +399,15 @@ void Parametros_Formais() {
 
 void G() {
     switch(token) {
-        case VAR: eat(VAR); eat(ID); eat(COLLON); eat(ID); G(); break;
-        case ID: eat(ID); H(); eat(ID); G(); break;            
+        case VAR: eat(VAR); eat(ID); eat(COLLON); eat(ID); GG(); break;
+        case ID: eat(ID); H(); eat(COLLON); eat(ID); GG(); break;            
         default: printf("ERRO DE SINTAXE. Linha: %d -> \"%s\"", linha, token_reconhecido); exit(0);
+    }
+}
+
+void GG() {
+    switch(token) {
+        case SCOLLON: eat(SCOLLON); G(); break;
     }
 }
 

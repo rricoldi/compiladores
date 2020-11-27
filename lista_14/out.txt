@@ -1,0 +1,10 @@
+EXPRESSAO CORRETA
+Erro de sintaxe na coluna [6]: cos
+A expressao terminou de forma inesperada.
+A expressao terminou de forma inesperada.
+Caractere(s) invalido(s) -> [#, @, $, !, =]
+Caractere(s) invalido(s) -> [@]
+EXPRESSAO CORRETA
+Erro de sintaxe na coluna [1]: *
+Erro de sintaxe na coluna [3]: )
+Erro de sintaxe na coluna [3]: )

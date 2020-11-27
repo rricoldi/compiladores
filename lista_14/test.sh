@@ -1,7 +1,7 @@
 #!/bin/bash
 make
-for i in $(seq 1 6); do
-    ./l9e1 < testes/entrada_0$i.txt > saida_0$i.txt
+for i in $(seq 1 8); do
+    ./calculadora < testes/entrada_0$i.txt > saida_0$i.txt
     DIFF=$(diff testes/saida_0$i.txt saida_0$i.txt)
     if [ "$DIFF" != "" ]
     then
@@ -9,6 +9,6 @@ for i in $(seq 1 6); do
     else
         echo "test $i succeed"
     fi
-    # rm saida_0$i.txt
+    rm saida_0$i.txt
 done
 make clean

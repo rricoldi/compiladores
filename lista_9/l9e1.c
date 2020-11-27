@@ -8,7 +8,7 @@
 #define numero_de_tokens 9
 #define numero_de_estados_finais 10
 
-enum tipos_de_token {IF=1, THEN=2, ELSE=3, BEGIN=4, END=5, PRINT=6, SEMI=7, NUM=8, EQ=9, ERR=0};
+enum tipos_de_token {IF=1, THEN=2, ELSE=3, BEGIN=4, END=5, PRINT=6, SEMI=7, NUM=8, EQ=9, ERR=0, ENDOF=10, EOL=11};
 char tokens_escritos[][6] = {"", "if", "then", "else", "begin", "end", "print", ";", "num", "="};
 char alfabeto[] = { '+', '-', '=', ';', 'b', 'd', 'e', 'f', 'g', 'h', 'i', 'l', 'n', 'p', 'r', 's', 't', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 int tokens[] = { ERR, ERR, ERR, NUM, ERR, IF, EQ, ERR, ERR, ERR, THEN, ERR, ERR, ERR, ELSE, SEMI, ERR, ERR, ERR, ERR, BEGIN, ERR, END, ERR, ERR, ERR, ERR, PRINT, NUM };
@@ -106,8 +106,8 @@ int getToken() {
     while(true) {
         limite_reconhecido = getchar();
         if(limite_reconhecido == '\n' || limite_reconhecido == ' ' ) {
-            if(contador == -1)
-                continue;
+            if(contador == -1 && limite_reconhecido == '\n')
+                return EOL;
             fseek(stdin, -(contador+1), SEEK_CUR);
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
             
@@ -123,7 +123,7 @@ int getToken() {
 
         if(limite_reconhecido == EOF) {
             if(contador == 0)
-                exit(0);
+                return ENDOF;
 
             token_reconhecido[strlen(token_reconhecido) - contador] = '\0';
             if(verifica_se_estado_final(estado_atual)) {
@@ -199,6 +199,7 @@ void error() {
 
 void advance() {
     token = getToken();
+
 }
 
 void eat(int t) {
@@ -217,27 +218,35 @@ void lida_com_erro() {
             break;
     }
 }
-
+//IF=1, THEN=2, ELSE=3, BEGIN=4, END=5, PRINT=6, SEMI=7, NUM=8, EQ=9, ERR=0
 void S(){
     erro=false;
     tipo_do_erro = 3;
     switch(token) {
-        case IF: eat(IF); if(erro) { lida_com_erro(); break; } E(); (THEN); if(erro) { lida_com_erro(); break; } S(); (ELSE); if(erro) { lida_com_erro(); break; } S(); success(); break;
-        case BEGIN: eat(BEGIN); if(erro) { lida_com_erro(); break; } S(); L(); success(); break;
-        case PRINT: eat(PRINT); if(erro) { lida_com_erro(); break; } E(); success(); break;
+        case IF: eat(IF); E(); eat(THEN); S(); eat(ELSE); S(); success(); break;
+        case BEGIN: eat(BEGIN); S(); L(); success(); break;
+        case PRINT: 
+            eat(PRINT); 
+            E(); 
+            success(); 
+            break;
         default: tipo_do_erro = 0; error(); 
     }
 }
 void L(){
     switch(token) {
-        case END: eat(END); if(erro) { lida_com_erro(); break; } success(); break;
-        case SEMI: eat(SEMI); if(erro) { lida_com_erro(); break; } S(); L(); success(); break;
+        case END: eat(END); break;
+        case SEMI: eat(SEMI); S(); L(); break;
         default: tipo_do_erro = 1; error(); 
     }
 }
 void E(){ 
     switch(token) {
-        case NUM: eat(NUM); if(erro) { lida_com_erro(); break; } eat(EQ); if(erro) { lida_com_erro(); break; } eat(NUM); if(erro) { lida_com_erro(); break; } success(); break;
+        case NUM: 
+            eat(NUM); 
+            eat(EQ); 
+            eat(NUM); 
+            break;
         default: tipo_do_erro = 2; error(); 
     }
     return;
@@ -250,6 +259,8 @@ int main() {
     while(true) {
         S();
         token = getToken();
+        if(token == ENDOF)
+            break;
     }
     
     return 0;

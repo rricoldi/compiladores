@@ -1,0 +1,193 @@
+Program ::= Type Aux1 identificador Aux1b
+
+Aux1b ::= VarDeclaration
+Aux1b ::= Parameters Aux1c
+
+Aux1c ::= Function
+Aux1c ::= ProtoDeclaration
+
+Declarations ::= # define identificador Expression
+Declarations ::= VarDeclaration
+Declarations ::= ProtoDeclaration
+
+Function ::= { Aux2 Commands }
+
+Aux1 ::= * Aux1
+Aux1 ::= ''
+
+Aux2 ::= VarDeclaration Aux2
+Aux2 ::= ''
+
+VarDeclaration ::= Type Aux3 ;
+
+Aux3 ::= Aux1 identificador Aux4 Aux5 Aux6
+
+Aux4 ::= [ Expression ]
+Aux4 ::= ''
+
+Aux5 ::= = AtribExpression
+Aux5 ::= ''
+
+Aux6 ::= , Aux1 identificador Aux4 Aux5 Aux6
+Aux6 ::= ''
+
+ProtoDeclaration ::= ;
+
+Parameters ::= ( Aux7 )
+
+Aux7 ::= Type Aux1 identificador Aux4b
+Aux7 ::= ''
+
+Aux4b ::= [ Expression ]
+Aux4b ::= ''
+
+Aux8 ::= , Aux7
+Aux8 ::= ''
+
+Type ::= int
+Type ::= char
+Type ::= void
+
+Block ::= { Commands }
+
+Commands ::= CommandList Commands
+Commands ::= ''
+
+CommandList ::= do Block while ( Expression ) ;
+CommandList ::= if ( Expression ) Block Aux9
+CommandList ::= while ( Expression ) Block
+CommandList ::= for ( Aux10 ; Aux10 ; Aux10 ) Block
+CommandList ::= printf ( string Aux11 ) ;
+CommandList ::= exit ( Expression ) ;
+CommandList ::= return Aux10 ;
+CommandList ::= Expression ;
+CommandList ::=  ;
+CommandList ::= Block
+
+Aux9 ::= else Block
+Aux9 ::= ''
+
+Aux10 ::= Expression
+Aux10 ::= ''
+
+Aux11 ::= , Expression
+Aux11 ::= ''
+
+Expression ::= AtribExpression Aux11
+
+AtribExpression ::= CondExpression
+AtribExpression ::= UnaryExpression Aux13 AtribExpression
+
+Aux13 ::= =
+Aux13 ::= +=
+Aux13 ::= -=
+
+CondExpression ::= LogicORExpression Aux14
+
+Aux14 ::= ? Expression : CondExpression
+Aux14 ::= ''
+
+LogicORExpression ::= LogicANDExpression Aux15
+
+Aux15 ::= || LogicANDExpression
+Aux15 ::= ''
+
+LogicANDExpression ::= ORExpression Aux16
+
+Aux16 ::= && ORExpression
+Aux16 ::= ''
+
+ORExpression :: XORExpression Aux17
+
+Aux17 ::= | XORExpression
+Aux17 ::= ''
+
+XORExpression :: ANDExpression Aux18
+
+Aux18 ::= | ANDExpression
+Aux18 ::= ''
+
+ANDExpression :: EqualExpression Aux19
+
+Aux19 ::= | EqualExpression
+Aux19 ::= ''
+
+EqualExpression ::= RelationalExpression Aux20
+
+Aux20 ::= == RelationalExpression
+Aux20 ::= != RelationalExpression
+Aux20 ::= ''
+
+RelationalExpression ::= ShiftExpression Aux21
+
+Aux21 ::= < ShiftExpression
+Aux21 ::= <= ShiftExpression
+Aux21 ::= > ShiftExpression
+Aux21 ::= >= ShiftExpression
+Aux21 ::= ''
+
+ShiftExpression ::= AddExpression Aux22
+
+Aux22 ::= << AddExpression
+Aux22 ::= >> AddExpression
+Aux22 ::= ''
+
+AddExpression ::= MultExpression Aux23
+
+Aux23 ::= + MultExpression
+Aux23 ::= - MultExpression
+Aux23 ::= ''
+
+MultExpression ::= CastExpression Aux24
+
+Aux24 ::= * CastExpression
+Aux24 ::= / CastExpression
+Aux24 ::= % CastExpression
+Aux24 ::= ''
+
+CastExpression ::= ++ UnaryExpression
+CastExpression ::= -- UnaryExpression
+CastExpression ::= & CastExpression
+CastExpression ::= * CastExpression
+CastExpression ::= + CastExpression
+CastExpression ::= - CastExpression
+CastExpression ::= ~ CastExpression
+CastExpression ::= ! CastExpression
+CastExpression ::= identificador
+CastExpression ::= Number
+CastExpression ::= caracter
+CastExpression ::= string
+CastExpression ::= ( Aux24b
+
+Aux24b ::= Expression )
+Aux24b ::= Type Aux1 ) CastExpression
+
+UnaryExpression ::=  PostFixExpression
+UnaryExpression ::= ++ UnaryExpression
+UnaryExpression ::= -- UnaryExpression
+UnaryExpression ::= & CastExpression
+UnaryExpression ::= * CastExpression
+UnaryExpression ::= + CastExpression
+UnaryExpression ::= - CastExpression
+UnaryExpression ::= ~ CastExpression
+UnaryExpression ::= ! CastExpression
+
+PostFixExpression ::= PrimaryExpression Aux25b
+
+Aux25b ::= PostFixExpression Aux25
+Aux25b ::= ''
+
+Aux25 ::= Aux4
+Aux25 ::= ++
+Aux25 ::= --
+Aux25 ::= ( Expression )
+
+PrimaryExpression ::= identificador
+PrimaryExpression ::= Number
+PrimaryExpression ::= caracter
+PrimaryExpression ::= string
+PrimaryExpression ::= ( Expression )
+
+Number ::= NUM_integer
+Number ::= NUM_HEXA
+Number ::= NUM_OCTAL

@@ -1,0 +1,154 @@
+Program -> Declarations Program .
+Program -> Function Program .
+
+Declarations -> "#" define identifier Expression .
+Declarations -> VarDeclaration .
+Declarations -> ProtoDeclaration .
+
+Function -> Type All identifier Parameters { VarAux Commands } .
+
+All -> * All .
+All -> .
+
+VarAux -> VarDeclaration VarAux .
+VarAux -> .
+
+VarDeclaration -> Type VarDeclarationAux ; .
+
+VarDeclarationAux -> All identifier ExpressionAux AtribAux .
+VarDeclarationAux -> All identifier ExpressionAux AtribAux , VarDeclarationAux .
+
+ExpressionAux -> [ Expression ] .
+ExpressionAux -> .
+
+ExpressionAuxB -> Expression .
+ExpressionAuxB -> .
+
+AtribAux -> = AtribExpression .
+AtribAux -> .
+
+ProtoDeclaration -> Type All identifier Parameters ; .
+
+Parameters -> ( ParametersAux ) .
+
+ParametersAux -> Type All identifier ExpressionAux .
+ParametersAux -> Type All identifier ExpressionAux , ParametersAuxB .
+ParametersAux -> .
+
+ParametersAuxB -> Type All identifier ExpressionAux .
+ParametersAuxB -> Type All identifier ExpressionAux , ParametersAuxB .
+
+Type -> int .
+Type -> char .
+Type -> void .
+
+Block -> { Commands } .
+
+Commands -> CommandsList Commands .
+Commands -> CommandsList .
+
+CommandsList -> do Block while ( Expression ) ; .
+CommandsList -> if ( Expression ) Block .
+CommandsList -> if ( Expression ) Block else Block .
+CommandsList -> while ( Expression ) Block .
+CommandsList -> for ( ExpressionAuxB ; ExpressionAuxB ; ExpressionAuxB ) Block .
+CommandsList -> printf ( string ) ; .
+CommandsList -> printf ( string , expression ) ; .
+CommandsList -> scanf ( string , & identifier ) ; .
+CommandsList -> exit ( Expression ) ; .
+CommandsList -> return ExpressionAuxB ; .
+CommandsList -> Expression ; .
+CommandsList -> ; .
+CommandsList -> Block .
+
+Expression -> AtribExpression .
+Expression -> AtribExpression  , Expression .
+
+AtribExpression -> ConditionalExpression .
+AtribExpression -> UnaryExpression Operator AtribExpression .
+
+Operator -> = .
+Operator -> += .
+Operator -> -= .
+
+ConditionalExpression -> LogicalOR .
+ConditionalExpression -> LogicalOR ? Expression : ConditionalExpression .
+
+LogicalOR -> LogicalAND .
+LogicalOR -> LogicalAND doubleVerticalBar LogicalOR .
+
+
+LogicalAND -> OR && .
+LogicalAND -> OR .
+
+OR -> XOR vertivalBar OR .
+OR -> XOR .
+
+XOR -> AND ^ XOR .
+XOR -> AND .
+
+AND -> EqualityExpression & AND .
+AND -> EqualityExpression .
+
+EqualityExpression -> RelationalExpression Comparison EqualityExpression .
+EqualityExpression -> RelationalExpression .
+
+Comparison -> == .
+Comparison -> != .
+
+RelationalExpression -> ShiftExpression ComparisonAux RelationalExpression .
+RelationalExpression -> ShiftExpression .
+
+ComparisonAux -> < .
+ComparisonAux -> <= .
+ComparisonAux -> > .
+ComparisonAux -> >= .
+
+ShiftExpression -> AditiveExpression >> ShiftExpression .
+ShiftExpression -> AditiveExpression << ShiftExpression .
+ShiftExpression -> AditiveExpression .
+
+AditiveExpression -> MultiplyExpression - AditiveExpression .
+AditiveExpression -> MultiplyExpression + AditiveExpression .
+AditiveExpression -> MultiplyExpression .
+
+MultiplyExpression -> CastExpression * MultiplyExpression .
+MultiplyExpression -> CastExpression / MultiplyExpression .
+MultiplyExpression -> CastExpression % MultiplyExpression .
+MultiplyExpression -> CastExpression .
+
+CastExpression -> UnaryExpression .
+CastExpression -> ( Type All ) CastExpression .
+
+UnaryExpression -> PostfixExpression .
+UnaryExpression -> ++ UnaryExpression .
+UnaryExpression -> -- UnaryExpression .
+UnaryExpression -> & CastExpression .
+UnaryExpression -> * CastExpression .
+UnaryExpression -> + CastExpression .
+UnaryExpression -> - CastExpression .
+UnaryExpression -> ~ CastExpression .
+UnaryExpression -> ! CastExpression .
+
+PostfixExpression -> PrimaryExpression .
+PostfixExpression -> PostfixExpression [ Expression ] .
+PostfixExpression -> PostfixExpression ++ .
+PostfixExpression -> PostfixExpression -- .
+PostfixExpression -> ( AtribExpressionAux ) .
+
+AtribExpressionAux -> AtribExpressionAuxB .
+AtribExpressionAux -> .
+
+AtribExpressionAuxB -> AtribExpression , AtribExpressionAuxB .
+AtribExpressionAuxB -> AtribExpression .
+
+PrimaryExpression -> identifier .
+PrimaryExpression -> Number .
+PrimaryExpression -> caracter .
+PrimaryExpression -> string .
+PrimaryExpression -> ( Expression ) . // error
+
+Number -> NUM_integer .
+Number -> NUM_hexa .
+Number -> NUM_octal .
+

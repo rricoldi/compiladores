@@ -1,3 +1,0 @@
-error:syntax:7:1: }
-}
-^

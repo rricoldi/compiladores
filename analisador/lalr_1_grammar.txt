@@ -1,154 +1,157 @@
-Program -> Declarations Program .
-Program -> Function Program .
+Program -> Declarations ProgramAux .
+Program -> Function ProgramAux .
 
-Declarations -> "#" define identifier Expression .
+ProgramAux -> Program .
+ProgramAux ->  .
+
+Declarations -> NUMBER_SIGN DEFINE IDENTIFIER Expression .
 Declarations -> VarDeclaration .
 Declarations -> ProtoDeclaration .
 
-Function -> Type All identifier Parameters { VarAux Commands } .
+Function -> Type Pointer IDENTIFIER Parameters L_CURLY_BRACKET VarAux Commands R_CURLY_BRACKET  .
 
-All -> * All .
-All -> .
+Pointer -> MULTIPLY Pointer .
+Pointer ->  .
 
 VarAux -> VarDeclaration VarAux .
-VarAux -> .
+VarAux ->  .
 
-VarDeclaration -> Type VarDeclarationAux ; .
+VarDeclaration -> Type VarDeclarationAux SEMICOLON .
 
-VarDeclarationAux -> All identifier ExpressionAux AtribAux .
-VarDeclarationAux -> All identifier ExpressionAux AtribAux , VarDeclarationAux .
+VarDeclarationAux -> Pointer IDENTIFIER ExpressionAux AtribAux .
+VarDeclarationAux -> Pointer IDENTIFIER ExpressionAux AtribAux COMMA VarDeclarationAux .
 
-ExpressionAux -> [ Expression ] .
-ExpressionAux -> .
+ExpressionAux -> L_SQUARE_BRACKET Expression R_SQUARE_BRACKET .
+ExpressionAux ->  .
 
 ExpressionAuxB -> Expression .
-ExpressionAuxB -> .
+ExpressionAuxB ->  .
 
 AtribAux -> = AtribExpression .
-AtribAux -> .
+AtribAux ->  .
 
-ProtoDeclaration -> Type All identifier Parameters ; .
+ProtoDeclaration -> Type Pointer IDENTIFIER Parameters SEMICOLON .
 
-Parameters -> ( ParametersAux ) .
+Parameters -> L_PAREN ParametersAux R_PAREN .
 
-ParametersAux -> Type All identifier ExpressionAux .
-ParametersAux -> Type All identifier ExpressionAux , ParametersAuxB .
-ParametersAux -> .
+ParametersAux -> Type Pointer IDENTIFIER ExpressionAux .
+ParametersAux -> Type Pointer IDENTIFIER ExpressionAux COMMA ParametersAuxB .
+ParametersAux ->  .
 
-ParametersAuxB -> Type All identifier ExpressionAux .
-ParametersAuxB -> Type All identifier ExpressionAux , ParametersAuxB .
+ParametersAuxB -> Type Pointer IDENTIFIER ExpressionAux .
+ParametersAuxB -> Type Pointer IDENTIFIER ExpressionAux COMMA ParametersAuxB .
 
-Type -> int .
-Type -> char .
-Type -> void .
+Type -> INT .
+Type -> CHAR .
+Type -> VOID .
 
-Block -> { Commands } .
+Block -> L_CURLY_BRACKET Commands R_CURLY_BRACKET .
 
 Commands -> CommandsList Commands .
 Commands -> CommandsList .
 
-CommandsList -> do Block while ( Expression ) ; .
-CommandsList -> if ( Expression ) Block .
-CommandsList -> if ( Expression ) Block else Block .
-CommandsList -> while ( Expression ) Block .
-CommandsList -> for ( ExpressionAuxB ; ExpressionAuxB ; ExpressionAuxB ) Block .
-CommandsList -> printf ( string ) ; .
-CommandsList -> printf ( string , expression ) ; .
-CommandsList -> scanf ( string , & identifier ) ; .
-CommandsList -> exit ( Expression ) ; .
-CommandsList -> return ExpressionAuxB ; .
-CommandsList -> Expression ; .
-CommandsList -> ; .
+CommandsList -> DO Block WHILE L_PAREN Expression R_PAREN SEMICOLON .
+CommandsList -> IF L_PAREN Expression R_PAREN Block .
+CommandsList -> IF L_PAREN Expression R_PAREN Block ELSE Block .
+CommandsList -> WHILE L_PAREN Expression R_PAREN Block .
+CommandsList -> FOR L_PAREN ExpressionAuxB SEMICOLON ExpressionAuxB SEMICOLON ExpressionAuxB R_PAREN Block .
+CommandsList -> PRINTF L_PAREN STRING R_PAREN SEMICOLON .
+CommandsList -> PRINTF L_PAREN STRING COMMA Expression R_PAREN SEMICOLON .
+CommandsList -> SCANF L_PAREN STRING COMMA BITWISE_AND IDENTIFIER R_PAREN SEMICOLON .
+CommandsList -> EXIT L_PAREN Expression R_PAREN SEMICOLON .
+CommandsList -> RETURN ExpressionAuxB SEMICOLON .
+CommandsList -> Expression SEMICOLON .
+CommandsList -> SEMICOLON .
 CommandsList -> Block .
 
 Expression -> AtribExpression .
-Expression -> AtribExpression  , Expression .
+Expression -> AtribExpression COMMA Expression .
 
 AtribExpression -> ConditionalExpression .
 AtribExpression -> UnaryExpression Operator AtribExpression .
 
-Operator -> = .
-Operator -> += .
-Operator -> -= .
+Operator -> ASSIGN .
+Operator -> ADD_ASSIGN .
+Operator -> MINUS_ASSIGN .
 
 ConditionalExpression -> LogicalOR .
-ConditionalExpression -> LogicalOR ? Expression : ConditionalExpression .
+ConditionalExpression -> LogicalOR TERNARY_CONDITIONAL Expression COLLON ConditionalExpression .
 
 LogicalOR -> LogicalAND .
-LogicalOR -> LogicalAND doubleVerticalBar LogicalOR .
+LogicalOR -> LogicalAND LOGICAL_OR LogicalOR .
 
 
-LogicalAND -> OR && .
+LogicalAND -> OR LOGICAL_AND .
 LogicalAND -> OR .
 
-OR -> XOR vertivalBar OR .
+OR -> XOR BITWISE_OR OR .
 OR -> XOR .
 
-XOR -> AND ^ XOR .
+XOR -> AND BITWISE_XOR XOR .
 XOR -> AND .
 
-AND -> EqualityExpression & AND .
+AND -> EqualityExpression BITWISE_AND AND .
 AND -> EqualityExpression .
 
 EqualityExpression -> RelationalExpression Comparison EqualityExpression .
 EqualityExpression -> RelationalExpression .
 
-Comparison -> == .
-Comparison -> != .
+Comparison -> EQUAL .
+Comparison -> NOT_EQUAL .
 
 RelationalExpression -> ShiftExpression ComparisonAux RelationalExpression .
 RelationalExpression -> ShiftExpression .
 
-ComparisonAux -> < .
-ComparisonAux -> <= .
-ComparisonAux -> > .
-ComparisonAux -> >= .
+ComparisonAux -> LESS_THAN .
+ComparisonAux -> LESS_EQUAL .
+ComparisonAux -> GREATER_THAN .
+ComparisonAux -> GREATER_EQUAL .
 
-ShiftExpression -> AditiveExpression >> ShiftExpression .
-ShiftExpression -> AditiveExpression << ShiftExpression .
+ShiftExpression -> AditiveExpression R_SHIFT ShiftExpression .
+ShiftExpression -> AditiveExpression L_SHIFT ShiftExpression .
 ShiftExpression -> AditiveExpression .
 
-AditiveExpression -> MultiplyExpression - AditiveExpression .
-AditiveExpression -> MultiplyExpression + AditiveExpression .
+AditiveExpression -> MultiplyExpression MINUS AditiveExpression .
+AditiveExpression -> MultiplyExpression PLUS AditiveExpression .
 AditiveExpression -> MultiplyExpression .
 
-MultiplyExpression -> CastExpression * MultiplyExpression .
-MultiplyExpression -> CastExpression / MultiplyExpression .
-MultiplyExpression -> CastExpression % MultiplyExpression .
+MultiplyExpression -> CastExpression MULTIPLY MultiplyExpression .
+MultiplyExpression -> CastExpression DIV MultiplyExpression .
+MultiplyExpression -> CastExpression REMAINDER MultiplyExpression .
 MultiplyExpression -> CastExpression .
 
 CastExpression -> UnaryExpression .
-CastExpression -> ( Type All ) CastExpression .
+CastExpression -> L_PAREN Type Pointer R_PAREN CastExpression .
 
 UnaryExpression -> PostfixExpression .
-UnaryExpression -> ++ UnaryExpression .
-UnaryExpression -> -- UnaryExpression .
-UnaryExpression -> & CastExpression .
-UnaryExpression -> * CastExpression .
-UnaryExpression -> + CastExpression .
-UnaryExpression -> - CastExpression .
-UnaryExpression -> ~ CastExpression .
-UnaryExpression -> ! CastExpression .
+UnaryExpression -> INC UnaryExpression .
+UnaryExpression -> DEC UnaryExpression .
+UnaryExpression -> BITWISE_AND CastExpression .
+UnaryExpression -> MULTIPLY CastExpression .
+UnaryExpression -> PLUS CastExpression .
+UnaryExpression -> MINUS CastExpression .
+UnaryExpression -> BITWISE_NOT CastExpression .
+UnaryExpression -> NOT CastExpression .
 
 PostfixExpression -> PrimaryExpression .
-PostfixExpression -> PostfixExpression [ Expression ] .
-PostfixExpression -> PostfixExpression ++ .
-PostfixExpression -> PostfixExpression -- .
-PostfixExpression -> ( AtribExpressionAux ) .
+PostfixExpression -> PostfixExpression L_SQUARE_BRACKET Expression R_SQUARE_BRACKET .
+PostfixExpression -> PostfixExpression INC .
+PostfixExpression -> PostfixExpression DEc .
+PostfixExpression -> L_PAREN AtribExpressionAux R_PAREN .
 
 AtribExpressionAux -> AtribExpressionAuxB .
-AtribExpressionAux -> .
+AtribExpressionAux ->  .
 
-AtribExpressionAuxB -> AtribExpression , AtribExpressionAuxB .
+AtribExpressionAuxB -> AtribExpression COMMA AtribExpressionAuxB .
 AtribExpressionAuxB -> AtribExpression .
 
-PrimaryExpression -> identifier .
+PrimaryExpression -> IDENTIFIER .
 PrimaryExpression -> Number .
-PrimaryExpression -> caracter .
-PrimaryExpression -> string .
-PrimaryExpression -> ( Expression ) . // error
+PrimaryExpression -> CHARACTER .
+PrimaryExpression -> STRING .
+PrimaryExpression -> L_PAREN Expression R_PAREN .
 
-Number -> NUM_integer .
-Number -> NUM_hexa .
-Number -> NUM_octal .
+Number -> NUM_INTEGER .
+Number -> NUM_HEXA .
+Number -> NUM_OCTAL .
 

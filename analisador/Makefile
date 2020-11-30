@@ -1,15 +1,21 @@
 FLEX=flex
+BISON=bison
 CC=gcc
-CFLAGS=
-LIBS=
 
-PROGRAMA = lexico
+PROGRAMA = sintatico
 LEXICO = lexico.l
+SINTATICO = sintatico.y
 
-$(PROGRAMA): $(LEXICO)
+$(PROGRAMA): $(LEXICO) $(SINTATICO) 
+	$(BISON) -d $(SINTATICO)
 	$(FLEX) $(LEXICO)
-	$(CC) lex.yy.c $(LIBS) -o $(PROGRAMA)
+	$(CC) -c *.c -I. $(FLAGS)
+	$(CC) *.o -o $(PROGRAMA) $(FLAGS)
 
 clean:
-	rm -f lex.yy.c
-	rm -f lexico.exe lexico
+	rm -f *.yy.c
+	rm -f *.tab.c
+	rm -f *.tab.h
+	rm -f *.o
+	rm -f *.exe
+	rm -f sintatico

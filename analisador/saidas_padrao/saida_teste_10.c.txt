@@ -1,3 +1,0 @@
-error:syntax:2:14: ,
-int acker(int, int);
-             ^

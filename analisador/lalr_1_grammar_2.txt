@@ -1,0 +1,156 @@
+Program -> Declarations ProgramAux
+Program -> Function ProgramAux
+
+ProgramAux -> Program
+ProgramAux -> ''
+
+Declarations -> NUMBER_SIGN DEFINE IDENTIFIER Expression
+Declarations -> VarDeclaration
+Declarations -> ProtoDeclaration
+
+Function -> Type Pointer IDENTIFIER Parameters L_CURLY_BRACKET VarAux Commands R_CURLY_BRACKET 
+
+Pointer -> MULTIPLY Pointer
+Pointer -> ''
+
+VarAux -> VarDeclaration VarAux
+VarAux -> ''
+
+VarDeclaration -> Type VarDeclarationAux SEMICOLON
+
+VarDeclarationAux -> Pointer IDENTIFIER ExpressionAux AtribAux
+VarDeclarationAux -> Pointer IDENTIFIER ExpressionAux AtribAux COMMA VarDeclarationAux
+
+ExpressionAux -> L_SQUARE_BRACKET Expression R_SQUARE_BRACKET
+ExpressionAux -> ''
+
+ExpressionAuxB -> Expression
+ExpressionAuxB -> ''
+
+AtribAux -> = AtribExpression
+AtribAux -> ''
+
+ProtoDeclaration -> Type Pointer IDENTIFIER Parameters SEMICOLON
+
+Parameters -> L_PAREN ParametersAux R_PAREN
+
+ParametersAux -> Type Pointer IDENTIFIER ExpressionAux
+ParametersAux -> Type Pointer IDENTIFIER ExpressionAux COMMA ParametersAuxB
+ParametersAux -> ''
+
+ParametersAuxB -> Type Pointer IDENTIFIER ExpressionAux
+ParametersAuxB -> Type Pointer IDENTIFIER ExpressionAux COMMA ParametersAuxB
+
+Type -> INT
+Type -> CHAR
+Type -> VOID
+
+Block -> L_CURLY_BRACKET Commands R_CURLY_BRACKET
+
+Commands -> CommandsList Commands
+Commands -> CommandsList
+
+CommandsList -> DO Block WHILE L_PAREN Expression R_PAREN SEMICOLON
+CommandsList -> IF L_PAREN Expression R_PAREN Block
+CommandsList -> IF L_PAREN Expression R_PAREN Block ELSE Block
+CommandsList -> WHILE L_PAREN Expression R_PAREN Block
+CommandsList -> FOR L_PAREN ExpressionAuxB SEMICOLON ExpressionAuxB SEMICOLON ExpressionAuxB R_PAREN Block
+CommandsList -> PRINTF L_PAREN STRING R_PAREN SEMICOLON
+CommandsList -> PRINTF L_PAREN STRING COMMA Expression R_PAREN SEMICOLON
+CommandsList -> SCANF L_PAREN STRING COMMA BITWISE_AND IDENTIFIER R_PAREN SEMICOLON
+CommandsList -> EXIT L_PAREN Expression R_PAREN SEMICOLON
+CommandsList -> RETURN ExpressionAuxB SEMICOLON
+CommandsList -> Expression SEMICOLON
+CommandsList -> SEMICOLON
+CommandsList -> Block
+
+Expression -> AtribExpression
+Expression -> AtribExpression COMMA Expression
+
+AtribExpression -> ConditionalExpression
+AtribExpression -> UnaryExpression Operator AtribExpression
+
+Operator -> ASSIGN
+Operator -> ADD_ASSIGN
+Operator -> MINUS_ASSIGN
+
+ConditionalExpression -> LogicalOR
+ConditionalExpression -> LogicalOR TERNARY_CONDITIONAL Expression COLLON ConditionalExpression
+
+LogicalOR -> LogicalAND
+LogicalOR -> LogicalAND LOGICAL_OR LogicalOR
+
+LogicalAND -> OR LOGICAL_AND
+LogicalAND -> OR
+
+OR -> XOR BITWISE_OR OR
+OR -> XOR
+
+XOR -> AND BITWISE_XOR XOR
+XOR -> AND
+
+AND -> EqualityExpression BITWISE_AND AND
+AND -> EqualityExpression
+
+EqualityExpression -> RelationalExpression Comparison EqualityExpression
+EqualityExpression -> RelationalExpression
+
+Comparison -> EQUAL
+Comparison -> NOT_EQUAL
+
+RelationalExpression -> ShiftExpression ComparisonAux RelationalExpression
+RelationalExpression -> ShiftExpression
+
+ComparisonAux -> LESS_THAN
+ComparisonAux -> LESS_EQUAL
+ComparisonAux -> GREATER_THAN
+ComparisonAux -> GREATER_EQUAL
+
+ShiftExpression -> AditiveExpression R_SHIFT ShiftExpression
+ShiftExpression -> AditiveExpression L_SHIFT ShiftExpression
+ShiftExpression -> AditiveExpression
+
+AditiveExpression -> MultiplyExpression MINUS AditiveExpression
+AditiveExpression -> MultiplyExpression PLUS AditiveExpression
+AditiveExpression -> MultiplyExpression
+
+MultiplyExpression -> CastExpression MULTIPLY MultiplyExpression
+MultiplyExpression -> CastExpression DIV MultiplyExpression
+MultiplyExpression -> CastExpression REMAINDER MultiplyExpression
+MultiplyExpression -> CastExpression
+
+CastExpression -> UnaryExpression
+CastExpression -> L_PAREN Type Pointer R_PAREN CastExpression
+
+UnaryExpression -> PostfixExpression
+UnaryExpression -> INC UnaryExpression
+UnaryExpression -> DEC UnaryExpression
+UnaryExpression -> BITWISE_AND CastExpression
+UnaryExpression -> MULTIPLY CastExpression
+UnaryExpression -> PLUS CastExpression
+UnaryExpression -> MINUS CastExpression
+UnaryExpression -> BITWISE_NOT CastExpression
+UnaryExpression -> NOT CastExpression
+
+PostfixExpression -> PrimaryExpression
+PostfixExpression -> PostfixExpression L_SQUARE_BRACKET Expression R_SQUARE_BRACKET
+PostfixExpression -> PostfixExpression INC
+PostfixExpression -> PostfixExpression DEc
+PostfixExpression -> PostfixExpression L_PAREN AtribExpressionAux R_PAREN
+
+AtribExpressionAux -> AtribExpressionAuxB
+AtribExpressionAux -> ''
+
+AtribExpressionAuxB -> AtribExpression COMMA AtribExpressionAuxB
+AtribExpressionAuxB -> AtribExpression
+
+PrimaryExpression -> IDENTIFIER
+PrimaryExpression -> Number
+PrimaryExpression -> CHARACTER
+PrimaryExpression -> STRING
+PrimaryExpression -> L_PAREN Expression R_PAREN
+
+Number -> NUM_INTEGER
+Number -> NUM_HEXA
+Number -> NUM_OCTAL
+

@@ -57,35 +57,40 @@ extern int yydebug;
     REMAINDER = 263,
     L_PAREN = 264,
     R_PAREN = 265,
-    SEN = 266,
-    COS = 267,
-    TAN = 268,
-    ABS = 269,
-    NUM_INTEGER = 270,
-    NUM_REAL = 271,
-    VARIABLE = 272,
-    EOL = 273,
-    END_OF_FILE = 274,
-    LEXICAL_ERROR = 275,
-    SHOW = 276,
-    SETTINGS = 277,
-    RESET = 278,
-    QUIT = 279,
-    SET = 280,
-    H_VIEW = 281,
-    V_VIEW = 282,
-    AXIS = 283,
-    ON = 284,
-    OFF = 285,
-    PLOT = 286,
-    INTEGRATION_STEPS = 287,
-    INTEGRATE = 288,
-    MATRIX = 289,
-    SOLVE = 290,
-    DETERMINANT = 291,
-    LINEAR_SYSTEM = 292,
-    ABOUT = 293,
-    SEMICOLON = 294
+    L_SQUARE_BRACKET = 266,
+    R_SQUARE_BRACKET = 267,
+    SEN = 268,
+    COS = 269,
+    TAN = 270,
+    ABS = 271,
+    NUM_INTEGER = 272,
+    NUM_REAL = 273,
+    VARIABLE = 274,
+    EOL = 275,
+    END_OF_FILE = 276,
+    LEXICAL_ERROR = 277,
+    SHOW = 278,
+    SETTINGS = 279,
+    RESET = 280,
+    QUIT = 281,
+    SET = 282,
+    H_VIEW = 283,
+    V_VIEW = 284,
+    AXIS = 285,
+    ON = 286,
+    OFF = 287,
+    PLOT = 288,
+    INTEGRAL_STEPS = 289,
+    INTEGRATE = 290,
+    MATRIX = 291,
+    SOLVE = 292,
+    DETERMINANT = 293,
+    LINEAR_SYSTEM = 294,
+    ABOUT = 295,
+    ASSIGN = 296,
+    SEMICOLON = 297,
+    COLON = 298,
+    COMMA = 299
   };
 #endif
 
@@ -93,13 +98,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 19 "sintatico.y"
+#line 54 "sintatico.y"
 
     int integer;
     float real;
     void* ast;
 
-#line 103 "sintatico.tab.h"
+#line 108 "sintatico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

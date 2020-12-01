@@ -2,6 +2,8 @@
 
 %{
 	#include <sintatico.tab.h>
+	
+	void clearBuffer();
 %}
 
 %%
@@ -17,6 +19,8 @@
 
 "("						return L_PAREN;
 ")"						return R_PAREN;
+"["						return L_SQUARE_BRACKET;
+"]"						return R_SQUARE_BRACKET;
 
 "sen"					return SEN;
 "cos"					return COS;
@@ -34,7 +38,7 @@
 "on"					return ON;
 "off"					return OFF;
 "plot"					return PLOT;
-"integral_steps"		return INTEGRATION_STEPS;
+"integral_steps"		return INTEGRAL_STEPS;
 "integrate"				return INTEGRATE;
 "matrix"				return MATRIX;
 "solve"					return SOLVE;
@@ -47,7 +51,10 @@
 [0-9]+"."[0-9]+			yylval.real = atof(yytext); return NUM_REAL;
 [0-9]+					yylval.integer = atoi(yytext); return NUM_INTEGER;
 
+"="						return ASSIGN;
 ";"						return SEMICOLON;
+":"						return COLON;
+","						return COMMA;
 "x"						return VARIABLE;
 
 [ \t]
@@ -59,3 +66,7 @@
 .						return LEXICAL_ERROR;
 
 %%
+
+void clearBuffer() {
+	yy_flush_buffer(YY_CURRENT_BUFFER);
+}

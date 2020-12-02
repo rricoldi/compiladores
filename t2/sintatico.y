@@ -114,17 +114,7 @@
 %%
                                                                                                                     // FUNCIONALIDADE | ERROS
 
-calc: exp EOL {                                                                                                                 // ⏳ | ⏳
-        AST_TEMP = $1; 
-        if(AST_TEMP)
-        {
-            RPN_Walk(AST_TEMP);
-            Delete_Tree(AST_TEMP);
-        }
-        else
-        {
-            printf("AST is NULL\n");
-        }
+calc: exp EOL {                                                                                                                 // ⏳ | ⏳        
         option = rpn;
         return 0;
     }
@@ -230,33 +220,40 @@ matrixAux: COMMA float matrixAux {
     | {}
 ;
 
-exp: factor { $$ = $1;}
-    | exp PLUS factor {
-        TreeNode* aux = createNode(PLUS, 0, $1, $3);
-        $$ = aux;
-    }
-    | exp MINUS factor {
-        TreeNode* aux = createNode(MINUS, 0, $1, $3);
-        aux->right = $3;
-        $$ = aux;
-    }
+exp: factor {}
+    | exp PLUS factor {}
+    | exp MINUS factor {}
 ;
 
-factor: term { $$ = $1; }
-    | factor MULTIPLY term {
-        TreeNode* aux = createNode(MULTIPLY, 0, $1, $3);                       
-        $$ = aux;
-    }
-    | factor DIV term {
-        TreeNode* aux = createNode(DIV, 0, $1, $3);
-        $$ = aux;
-    }
+factor: operator {}
+    | factor DIV operator {}
+    | factor MULTIPLY operator {}
 ;
 
-term: NUM_INTEGER { 
-    TreeNode* aux = createNode(NUM_INTEGER, $1, NULL, NULL);
-    $$ = aux;
-}
+operator: signed {}
+    | operator REMAINDER signed {}
+    | operator POWER signed {}
+;
+
+signed: function {} 
+    | PLUS function {}  
+    | MINUS function {} 
+;
+
+function: delimit {}
+    | SEN L_PAREN exp R_PAREN {}
+    | COS L_PAREN exp R_PAREN {}
+    | TAN L_PAREN exp R_PAREN {}
+    | ABS L_PAREN exp R_PAREN {}
+;
+
+delimit: term {}
+    | L_PAREN exp R_PAREN {}
+;
+
+term: NUM_INTEGER {}
+    | NUM_REAL {}
+    | VARIABLE {}
 ;
 
 float: NUM_REAL {

@@ -22,7 +22,16 @@ void RPN_Walk(TreeNode* aux) {
 			case MINUS:{printf("- ");};break;
 			case MULTIPLY:{printf("* ");};break;
 			case DIV:{printf("/ ");};break;
-			case NUM_INTEGER:{printf("%f ",aux->value);};break;
+			case POWER:{printf("^ ");};break;
+			case REMAINDER:{printf("%% ");};break;
+			case SEN:{printf("SEN ");};break;
+			case COS:{printf("COS ");};break;
+			case TAN:{printf("TAN ");};break;
+			case ABS:{printf("ABS ");};break;
+			case NUM_INTEGER:{printf("%.6f ",aux->value);};break;
+			case NUM_REAL:{printf("%.6f ",aux->value);};break;
+			case VARIABLE:{printf("x ");};break;
+			case L_PAREN: break;
 			default:{printf("ERROR: INVALID TYPE ");};break;
 		}
 	}

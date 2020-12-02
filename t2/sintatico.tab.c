@@ -601,12 +601,12 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   117,   117,   121,   125,   129,   133,   145,   157,   163,
-     169,   169,   176,   186,   190,   194,   198,   202,   206,   212,
-     214,   217,   220,   223,   224,   225,   228,   229,   230,   233,
-     234,   235,   238,   239,   240,   243,   244,   245,   246,   247,
-     250,   251,   254,   255,   256,   259,   262,   265,   268,   271,
-     274,   279,   282,   285
+       0,   121,   121,   135,   139,   143,   147,   159,   171,   177,
+     183,   183,   190,   200,   204,   208,   212,   216,   220,   226,
+     228,   231,   234,   238,   239,   243,   249,   250,   254,   260,
+     261,   265,   271,   272,   276,   282,   283,   287,   291,   295,
+     301,   302,   308,   312,   316,   322,   325,   328,   331,   334,
+     337,   342,   345,   348
 };
 #endif
 
@@ -1489,43 +1489,53 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 117 "sintatico.y"
+#line 121 "sintatico.y"
               {                                                                                                                 // ⏳ | ⏳        
+        AST_TEMP = (yyvsp[-1].ast);
+        if(AST_TEMP)
+        {
+            RPN_Walk(AST_TEMP);
+            Delete_Tree(AST_TEMP);
+        }
+        else
+        {
+            printf("AST is NULL\n");
+        }
         option = rpn;
         return 0;
     }
-#line 1498 "sintatico.tab.c"
+#line 1508 "sintatico.tab.c"
     break;
 
   case 3:
-#line 121 "sintatico.y"
+#line 135 "sintatico.y"
                {                                                                                                                // ✅ | ✅ 
         option = quit;
         return 0;
     }
-#line 1507 "sintatico.tab.c"
+#line 1517 "sintatico.tab.c"
     break;
 
   case 4:
-#line 125 "sintatico.y"
+#line 139 "sintatico.y"
                                   {                                                                                             // ✅ | ✅ 
         option = show_settings;
         return 0;
     }
-#line 1516 "sintatico.tab.c"
+#line 1526 "sintatico.tab.c"
     break;
 
   case 5:
-#line 129 "sintatico.y"
+#line 143 "sintatico.y"
                                    {                                                                                            // ✅ | ✅ 
         option = reset_settings;
         return 0;
     }
-#line 1525 "sintatico.tab.c"
+#line 1535 "sintatico.tab.c"
     break;
 
   case 6:
-#line 133 "sintatico.y"
+#line 147 "sintatico.y"
                                                  {                                                                              // ✅ | ✅
         if((yyvsp[-2].real) <= (yyvsp[-4].real)) {
             yyerror(error_h_view);
@@ -1538,11 +1548,11 @@ yyreduce:
         option = set_h_view;
         return 0;
     }
-#line 1542 "sintatico.tab.c"
+#line 1552 "sintatico.tab.c"
     break;
 
   case 7:
-#line 145 "sintatico.y"
+#line 159 "sintatico.y"
                                                  {                                                                              // ✅ | ✅
         if((yyvsp[-2].real) <= (yyvsp[-4].real)) {
             yyerror(error_v_view);
@@ -1555,51 +1565,51 @@ yyreduce:
         option = set_v_view;
         return 0;
     }
-#line 1559 "sintatico.tab.c"
+#line 1569 "sintatico.tab.c"
     break;
 
   case 8:
-#line 157 "sintatico.y"
+#line 171 "sintatico.y"
                                 {                                                                                               // ✅ | ⏳
         settings->draw_axis = 1;
 
         option = set_axis_on;
         return 0;
     }
-#line 1570 "sintatico.tab.c"
+#line 1580 "sintatico.tab.c"
     break;
 
   case 9:
-#line 163 "sintatico.y"
+#line 177 "sintatico.y"
                                  {                                                                                              // ✅ | ⏳
         settings->draw_axis = 0;
 
         option = set_axis_off;
         return 0;
     }
-#line 1581 "sintatico.tab.c"
+#line 1591 "sintatico.tab.c"
     break;
 
   case 10:
-#line 169 "sintatico.y"
+#line 183 "sintatico.y"
                          {                                                                                                      // ⏳ | ⏳
         option = plot;
         return 0;
     }
-#line 1590 "sintatico.tab.c"
+#line 1600 "sintatico.tab.c"
     break;
 
   case 11:
-#line 172 "sintatico.y"
+#line 186 "sintatico.y"
                                              {                                                                                  // ⏳ | ⏳
         option = plot_fn;
         return 0;
     }
-#line 1599 "sintatico.tab.c"
+#line 1609 "sintatico.tab.c"
     break;
 
   case 12:
-#line 176 "sintatico.y"
+#line 190 "sintatico.y"
                                            {                                                                                    // ✅ | ✅
         if((yyvsp[-2].integer) < 1) {
             yyerror(error_set_int);
@@ -1610,296 +1620,344 @@ yyreduce:
         option = set_integral_steps;
         return 0;
     }
-#line 1614 "sintatico.tab.c"
+#line 1624 "sintatico.tab.c"
     break;
 
   case 13:
-#line 186 "sintatico.y"
+#line 200 "sintatico.y"
                                                                           {                                                     // ⏳ | ⏳
         option = integrate;
         return 0;
     }
-#line 1623 "sintatico.tab.c"
+#line 1633 "sintatico.tab.c"
     break;
 
   case 14:
-#line 190 "sintatico.y"
+#line 204 "sintatico.y"
                                                                                                                              {  // ⏳ | ⏳
         option = matrix;
         return 0;
     }
-#line 1632 "sintatico.tab.c"
+#line 1642 "sintatico.tab.c"
     break;
 
   case 15:
-#line 194 "sintatico.y"
+#line 208 "sintatico.y"
                                 {                                                                                               // ⏳ | ⏳
         option = show_matrix;
         return 0;
     }
-#line 1641 "sintatico.tab.c"
+#line 1651 "sintatico.tab.c"
     break;
 
   case 16:
-#line 198 "sintatico.y"
+#line 212 "sintatico.y"
                                       {                                                                                         // ⏳ | ⏳
         option = solve_determinant;
         return 0;
     }
-#line 1650 "sintatico.tab.c"
+#line 1660 "sintatico.tab.c"
     break;
 
   case 17:
-#line 202 "sintatico.y"
+#line 216 "sintatico.y"
                                         {                                                                                       // ⏳ | ⏳
         option = solve_linear_system;
         return 0;
     }
-#line 1659 "sintatico.tab.c"
+#line 1669 "sintatico.tab.c"
     break;
 
   case 18:
-#line 206 "sintatico.y"
+#line 220 "sintatico.y"
                           {                                                                                                     // ✅ | ✅
         option = about;
         return 0;
     }
-#line 1668 "sintatico.tab.c"
+#line 1678 "sintatico.tab.c"
     break;
 
   case 19:
-#line 212 "sintatico.y"
+#line 226 "sintatico.y"
                                                                        {
     }
-#line 1675 "sintatico.tab.c"
+#line 1685 "sintatico.tab.c"
     break;
 
   case 20:
-#line 214 "sintatico.y"
+#line 228 "sintatico.y"
       {}
-#line 1681 "sintatico.tab.c"
+#line 1691 "sintatico.tab.c"
     break;
 
   case 21:
-#line 217 "sintatico.y"
+#line 231 "sintatico.y"
                                  {
 
     }
-#line 1689 "sintatico.tab.c"
+#line 1699 "sintatico.tab.c"
     break;
 
   case 22:
-#line 220 "sintatico.y"
+#line 234 "sintatico.y"
       {}
-#line 1695 "sintatico.tab.c"
+#line 1705 "sintatico.tab.c"
     break;
 
   case 23:
-#line 223 "sintatico.y"
-            {}
-#line 1701 "sintatico.tab.c"
+#line 238 "sintatico.y"
+            { (yyval.ast) = (yyvsp[0].ast); }
+#line 1711 "sintatico.tab.c"
     break;
 
   case 24:
-#line 224 "sintatico.y"
-                      {}
-#line 1707 "sintatico.tab.c"
+#line 239 "sintatico.y"
+                      {
+        TreeNode* aux = createNode(PLUS, 0.0, (yyvsp[-2].ast), (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1720 "sintatico.tab.c"
     break;
 
   case 25:
-#line 225 "sintatico.y"
-                       {}
-#line 1713 "sintatico.tab.c"
+#line 243 "sintatico.y"
+                       {
+        TreeNode* aux = createNode(MINUS, 0.0, (yyvsp[-2].ast), (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1729 "sintatico.tab.c"
     break;
 
   case 26:
-#line 228 "sintatico.y"
-                 {}
-#line 1719 "sintatico.tab.c"
+#line 249 "sintatico.y"
+                 { (yyval.ast) = (yyvsp[0].ast); }
+#line 1735 "sintatico.tab.c"
     break;
 
   case 27:
-#line 229 "sintatico.y"
-                          {}
-#line 1725 "sintatico.tab.c"
+#line 250 "sintatico.y"
+                          {
+        TreeNode* aux = createNode(DIV, 0.0, (yyvsp[-2].ast), (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1744 "sintatico.tab.c"
     break;
 
   case 28:
-#line 230 "sintatico.y"
-                               {}
-#line 1731 "sintatico.tab.c"
+#line 254 "sintatico.y"
+                               {
+        TreeNode* aux = createNode(MULTIPLY, 0.0, (yyvsp[-2].ast), (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1753 "sintatico.tab.c"
     break;
 
   case 29:
-#line 233 "sintatico.y"
-                 {}
-#line 1737 "sintatico.tab.c"
+#line 260 "sintatico.y"
+                 { (yyval.ast) = (yyvsp[0].ast); }
+#line 1759 "sintatico.tab.c"
     break;
 
   case 30:
-#line 234 "sintatico.y"
-                                {}
-#line 1743 "sintatico.tab.c"
+#line 261 "sintatico.y"
+                                {
+        TreeNode* aux = createNode(REMAINDER, 0.0, (yyvsp[-2].ast), (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1768 "sintatico.tab.c"
     break;
 
   case 31:
-#line 235 "sintatico.y"
-                            {}
-#line 1749 "sintatico.tab.c"
+#line 265 "sintatico.y"
+                            {
+        TreeNode* aux = createNode(POWER, 0.0, (yyvsp[-2].ast), (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1777 "sintatico.tab.c"
     break;
 
   case 32:
-#line 238 "sintatico.y"
-                 {}
-#line 1755 "sintatico.tab.c"
+#line 271 "sintatico.y"
+                 { (yyval.ast) = (yyvsp[0].ast); }
+#line 1783 "sintatico.tab.c"
     break;
 
   case 33:
-#line 239 "sintatico.y"
-                    {}
-#line 1761 "sintatico.tab.c"
+#line 272 "sintatico.y"
+                    {
+        TreeNode* aux = createNode(PLUS, 0.0, NULL, (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1792 "sintatico.tab.c"
     break;
 
   case 34:
-#line 240 "sintatico.y"
-                     {}
-#line 1767 "sintatico.tab.c"
+#line 276 "sintatico.y"
+                     {
+        TreeNode* aux = createNode(MINUS, 0.0, NULL, (yyvsp[0].ast));
+        (yyval.ast) = aux;
+    }
+#line 1801 "sintatico.tab.c"
     break;
 
   case 35:
-#line 243 "sintatico.y"
-                  {}
-#line 1773 "sintatico.tab.c"
+#line 282 "sintatico.y"
+                  { (yyval.ast) = (yyvsp[0].ast); }
+#line 1807 "sintatico.tab.c"
     break;
 
   case 36:
-#line 244 "sintatico.y"
-                              {}
-#line 1779 "sintatico.tab.c"
+#line 283 "sintatico.y"
+                              {
+        TreeNode* aux = createNode(SEN, 0.0, NULL, (yyvsp[-1].ast));
+        (yyval.ast) = aux;
+    }
+#line 1816 "sintatico.tab.c"
     break;
 
   case 37:
-#line 245 "sintatico.y"
-                              {}
-#line 1785 "sintatico.tab.c"
+#line 287 "sintatico.y"
+                              {
+        TreeNode* aux = createNode(COS, 0.0, NULL, (yyvsp[-1].ast));
+        (yyval.ast) = aux;
+    }
+#line 1825 "sintatico.tab.c"
     break;
 
   case 38:
-#line 246 "sintatico.y"
-                              {}
-#line 1791 "sintatico.tab.c"
+#line 291 "sintatico.y"
+                              {
+        TreeNode* aux = createNode(TAN, 0.0, NULL, (yyvsp[-1].ast));
+        (yyval.ast) = aux;
+    }
+#line 1834 "sintatico.tab.c"
     break;
 
   case 39:
-#line 247 "sintatico.y"
-                              {}
-#line 1797 "sintatico.tab.c"
-    break;
-
-  case 40:
-#line 250 "sintatico.y"
-              {}
-#line 1803 "sintatico.tab.c"
-    break;
-
-  case 41:
-#line 251 "sintatico.y"
-                          {}
-#line 1809 "sintatico.tab.c"
-    break;
-
-  case 42:
-#line 254 "sintatico.y"
-                  {}
-#line 1815 "sintatico.tab.c"
-    break;
-
-  case 43:
-#line 255 "sintatico.y"
-               {}
-#line 1821 "sintatico.tab.c"
-    break;
-
-  case 44:
-#line 256 "sintatico.y"
-               {}
-#line 1827 "sintatico.tab.c"
-    break;
-
-  case 45:
-#line 259 "sintatico.y"
-                {
-        (yyval.real) = (yyvsp[0].real);
-    }
-#line 1835 "sintatico.tab.c"
-    break;
-
-  case 46:
-#line 262 "sintatico.y"
-                     {
-        (yyval.real) = -(yyvsp[0].real);
+#line 295 "sintatico.y"
+                              {
+        TreeNode* aux = createNode(ABS, 0.0, NULL, (yyvsp[-1].ast));
+        (yyval.ast) = aux;
     }
 #line 1843 "sintatico.tab.c"
     break;
 
-  case 47:
-#line 265 "sintatico.y"
-                    {
-        (yyval.real) = (yyvsp[0].real);
-    }
-#line 1851 "sintatico.tab.c"
+  case 40:
+#line 301 "sintatico.y"
+              { (yyval.ast) = (yyvsp[0].ast); }
+#line 1849 "sintatico.tab.c"
     break;
 
-  case 48:
-#line 268 "sintatico.y"
+  case 41:
+#line 302 "sintatico.y"
+                          {
+        TreeNode* aux = createNode(L_PAREN, 0.0, NULL, (yyvsp[-1].ast));
+        (yyval.ast) = aux;
+    }
+#line 1858 "sintatico.tab.c"
+    break;
+
+  case 42:
+#line 308 "sintatico.y"
                   {
-        (yyval.real) = (yyvsp[0].integer) * 1.0;
-    }
-#line 1859 "sintatico.tab.c"
-    break;
-
-  case 49:
-#line 271 "sintatico.y"
-                        {
-        (yyval.real) = -(yyvsp[0].integer) * 1.0;
+        TreeNode* aux = createNode(NUM_INTEGER, (yyvsp[0].integer) * 1.0, NULL, NULL);
+        (yyval.ast) = (TreeNode*) aux;
     }
 #line 1867 "sintatico.tab.c"
     break;
 
+  case 43:
+#line 312 "sintatico.y"
+               {
+        TreeNode* aux = createNode(NUM_REAL, (yyvsp[0].real), NULL, NULL);
+        (yyval.ast) = (TreeNode*) aux;
+    }
+#line 1876 "sintatico.tab.c"
+    break;
+
+  case 44:
+#line 316 "sintatico.y"
+               {
+        TreeNode* aux = createNode(VARIABLE, 0.0, NULL, NULL);
+        (yyval.ast) = (TreeNode*) aux;
+    }
+#line 1885 "sintatico.tab.c"
+    break;
+
+  case 45:
+#line 322 "sintatico.y"
+                {
+        (yyval.real) = (yyvsp[0].real);
+    }
+#line 1893 "sintatico.tab.c"
+    break;
+
+  case 46:
+#line 325 "sintatico.y"
+                     {
+        (yyval.real) = -(yyvsp[0].real);
+    }
+#line 1901 "sintatico.tab.c"
+    break;
+
+  case 47:
+#line 328 "sintatico.y"
+                    {
+        (yyval.real) = (yyvsp[0].real);
+    }
+#line 1909 "sintatico.tab.c"
+    break;
+
+  case 48:
+#line 331 "sintatico.y"
+                  {
+        (yyval.real) = (yyvsp[0].integer) * 1.0;
+    }
+#line 1917 "sintatico.tab.c"
+    break;
+
+  case 49:
+#line 334 "sintatico.y"
+                        {
+        (yyval.real) = -(yyvsp[0].integer) * 1.0;
+    }
+#line 1925 "sintatico.tab.c"
+    break;
+
   case 50:
-#line 274 "sintatico.y"
+#line 337 "sintatico.y"
                        {
         (yyval.real) = (yyvsp[0].integer) * 1.0;
     }
-#line 1875 "sintatico.tab.c"
+#line 1933 "sintatico.tab.c"
     break;
 
   case 51:
-#line 279 "sintatico.y"
+#line 342 "sintatico.y"
                  {
         (yyval.integer) = (yyvsp[0].integer);
     }
-#line 1883 "sintatico.tab.c"
+#line 1941 "sintatico.tab.c"
     break;
 
   case 52:
-#line 282 "sintatico.y"
+#line 345 "sintatico.y"
                         {
         (yyval.integer) = -(yyvsp[0].integer);
     }
-#line 1891 "sintatico.tab.c"
+#line 1949 "sintatico.tab.c"
     break;
 
   case 53:
-#line 285 "sintatico.y"
+#line 348 "sintatico.y"
                        {
         (yyval.integer) = (yyvsp[0].integer);
     }
-#line 1899 "sintatico.tab.c"
+#line 1957 "sintatico.tab.c"
     break;
 
 
-#line 1903 "sintatico.tab.c"
+#line 1961 "sintatico.tab.c"
 
       default: break;
     }
@@ -2131,7 +2189,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 290 "sintatico.y"
+#line 353 "sintatico.y"
 
 
 void yyerror(char *s) {
@@ -2207,6 +2265,8 @@ int main() {
             case about:
                 printAbout();
                 break;
+            case rpn:
+                printf("\n");
             default:
                 break;
         }

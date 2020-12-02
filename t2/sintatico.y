@@ -104,6 +104,10 @@
 %type <ast> exp
 %type <ast> factor
 %type <ast> term
+%type <ast> operator
+%type <ast> signed
+%type <ast> function
+%type <ast> delimit
 %type <real> float
 %type <integer> int
 %type <integer> NUM_INTEGER
@@ -115,6 +119,16 @@
                                                                                                                     // FUNCIONALIDADE | ERROS
 
 calc: exp EOL {                                                                                                                 // ⏳ | ⏳        
+        AST_TEMP = $1;
+        if(AST_TEMP)
+        {
+            RPN_Walk(AST_TEMP);
+            Delete_Tree(AST_TEMP);
+        }
+        else
+        {
+            printf("AST is NULL\n");
+        }
         option = rpn;
         return 0;
     }
@@ -220,40 +234,89 @@ matrixAux: COMMA float matrixAux {
     | {}
 ;
 
-exp: factor {}
-    | exp PLUS factor {}
-    | exp MINUS factor {}
+
+exp: factor { $$ = $1; }
+    | exp PLUS factor {
+        TreeNode* aux = createNode(PLUS, 0.0, $1, $3);
+        $$ = aux;
+    }
+    | exp MINUS factor {
+        TreeNode* aux = createNode(MINUS, 0.0, $1, $3);
+        $$ = aux;
+    }
 ;
 
-factor: operator {}
-    | factor DIV operator {}
-    | factor MULTIPLY operator {}
+factor: operator { $$ = $1; }
+    | factor DIV operator {
+        TreeNode* aux = createNode(DIV, 0.0, $1, $3);
+        $$ = aux;
+    }
+    | factor MULTIPLY operator {
+        TreeNode* aux = createNode(MULTIPLY, 0.0, $1, $3);
+        $$ = aux;
+    }
 ;
 
-operator: signed {}
-    | operator REMAINDER signed {}
-    | operator POWER signed {}
+operator: signed { $$ = $1; }
+    | operator REMAINDER signed {
+        TreeNode* aux = createNode(REMAINDER, 0.0, $1, $3);
+        $$ = aux;
+    }
+    | operator POWER signed {
+        TreeNode* aux = createNode(POWER, 0.0, $1, $3);
+        $$ = aux;
+    }
 ;
 
-signed: function {} 
-    | PLUS function {}  
-    | MINUS function {} 
+signed: function { $$ = $1; } 
+    | PLUS function {
+        TreeNode* aux = createNode(PLUS, 0.0, NULL, $2);
+        $$ = aux;
+    }  
+    | MINUS function {
+        TreeNode* aux = createNode(MINUS, 0.0, NULL, $2);
+        $$ = aux;
+    } 
 ;
 
-function: delimit {}
-    | SEN L_PAREN exp R_PAREN {}
-    | COS L_PAREN exp R_PAREN {}
-    | TAN L_PAREN exp R_PAREN {}
-    | ABS L_PAREN exp R_PAREN {}
+function: delimit { $$ = $1; }
+    | SEN L_PAREN exp R_PAREN {
+        TreeNode* aux = createNode(SEN, 0.0, NULL, $3);
+        $$ = aux;
+    }
+    | COS L_PAREN exp R_PAREN {
+        TreeNode* aux = createNode(COS, 0.0, NULL, $3);
+        $$ = aux;
+    }
+    | TAN L_PAREN exp R_PAREN {
+        TreeNode* aux = createNode(TAN, 0.0, NULL, $3);
+        $$ = aux;
+    }
+    | ABS L_PAREN exp R_PAREN {
+        TreeNode* aux = createNode(ABS, 0.0, NULL, $3);
+        $$ = aux;
+    }
 ;
 
-delimit: term {}
-    | L_PAREN exp R_PAREN {}
+delimit: term { $$ = $1; }
+    | L_PAREN exp R_PAREN {
+        TreeNode* aux = createNode(L_PAREN, 0.0, NULL, $2);
+        $$ = aux;
+    }
 ;
 
-term: NUM_INTEGER {}
-    | NUM_REAL {}
-    | VARIABLE {}
+term: NUM_INTEGER {
+        TreeNode* aux = createNode(NUM_INTEGER, $1 * 1.0, NULL, NULL);
+        $$ = (TreeNode*) aux;
+    }
+    | NUM_REAL {
+        TreeNode* aux = createNode(NUM_REAL, $1, NULL, NULL);
+        $$ = (TreeNode*) aux;
+    }
+    | VARIABLE {
+        TreeNode* aux = createNode(VARIABLE, 0.0, NULL, NULL);
+        $$ = (TreeNode*) aux;
+    }
 ;
 
 float: NUM_REAL {
@@ -362,6 +425,8 @@ int main() {
             case about:
                 printAbout();
                 break;
+            case rpn:
+                printf("\n");
             default:
                 break;
         }

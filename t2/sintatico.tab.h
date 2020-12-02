@@ -51,46 +51,48 @@ extern int yydebug;
   {
     PLUS = 258,
     MINUS = 259,
-    MULTIPLY = 260,
-    DIV = 261,
-    POWER = 262,
-    REMAINDER = 263,
-    L_PAREN = 264,
-    R_PAREN = 265,
-    L_SQUARE_BRACKET = 266,
-    R_SQUARE_BRACKET = 267,
-    SEN = 268,
-    COS = 269,
-    TAN = 270,
-    ABS = 271,
-    NUM_INTEGER = 272,
-    NUM_REAL = 273,
-    VARIABLE = 274,
-    EOL = 275,
-    END_OF_FILE = 276,
-    LEXICAL_ERROR = 277,
-    SHOW = 278,
-    SETTINGS = 279,
-    RESET = 280,
-    QUIT = 281,
-    SET = 282,
-    H_VIEW = 283,
-    V_VIEW = 284,
-    AXIS = 285,
-    ON = 286,
-    OFF = 287,
-    PLOT = 288,
-    INTEGRAL_STEPS = 289,
-    INTEGRATE = 290,
-    MATRIX = 291,
-    SOLVE = 292,
-    DETERMINANT = 293,
-    LINEAR_SYSTEM = 294,
-    ABOUT = 295,
-    ASSIGN = 296,
-    SEMICOLON = 297,
-    COLON = 298,
-    COMMA = 299
+    ADD = 260,
+    SUB = 261,
+    MULTIPLY = 262,
+    DIV = 263,
+    POWER = 264,
+    REMAINDER = 265,
+    L_PAREN = 266,
+    R_PAREN = 267,
+    L_SQUARE_BRACKET = 268,
+    R_SQUARE_BRACKET = 269,
+    SEN = 270,
+    COS = 271,
+    TAN = 272,
+    ABS = 273,
+    NUM_INTEGER = 274,
+    NUM_REAL = 275,
+    VARIABLE = 276,
+    EOL = 277,
+    END_OF_FILE = 278,
+    LEXICAL_ERROR = 279,
+    SHOW = 280,
+    SETTINGS = 281,
+    RESET = 282,
+    QUIT = 283,
+    SET = 284,
+    H_VIEW = 285,
+    V_VIEW = 286,
+    AXIS = 287,
+    ON = 288,
+    OFF = 289,
+    PLOT = 290,
+    INTEGRAL_STEPS = 291,
+    INTEGRATE = 292,
+    MATRIX = 293,
+    SOLVE = 294,
+    DETERMINANT = 295,
+    LINEAR_SYSTEM = 296,
+    ABOUT = 297,
+    ASSIGN = 298,
+    SEMICOLON = 299,
+    COLON = 300,
+    COMMA = 301
   };
 #endif
 
@@ -98,13 +100,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 54 "sintatico.y"
+#line 38 "sintatico.y"
 
     int integer;
     float real;
     void* ast;
 
-#line 108 "sintatico.tab.h"
+#line 110 "sintatico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

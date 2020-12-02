@@ -2,7 +2,6 @@
     #include<stdio.h>
     #include<string.h>
     #include <ast.h>
-    #include <settings.h>
 
     extern char* yytext;
     extern int yylex();
@@ -28,26 +27,11 @@
     TreeNode* AST_TEMP = NULL;
     Settings* settings = NULL;
 
-    enum options {
-        error = -1,
-        quit,
-        show_settings,
-        reset_settings,
-        set_h_view,
-        set_v_view,
-        set_axis_on,
-        set_axis_off,
-        plot,
-        plot_fn,
-        rpn,
-        set_integral_steps,
-        integrate,
-        matrix,
-        show_matrix,
-        solve_determinant,
-        solve_linear_system,
-        about
-    };
+    int error = -1;
+    int quit = 0;
+    int functionInserted = 0;
+
+    void printAbout();
 
 %}
 
@@ -59,6 +43,8 @@
 
 %token PLUS
 %token MINUS
+%token ADD
+%token SUB
 %token MULTIPLY
 %token DIV
 %token POWER
@@ -118,18 +104,15 @@
 %%
                                                                                                                     // FUNCIONALIDADE | ERROS
 
-calc: exp EOL {                                                                                                                 // ⏳ | ⏳        
+calc: exp EOL {                                                                                                                 // ✅ | ✅ 
         AST_TEMP = $1;
         if(AST_TEMP)
         {
+            printf("\nFunction in RPN format:\n\n");
             RPN_Walk(AST_TEMP);
             Delete_Tree(AST_TEMP);
+            printf("\n\n");
         }
-        else
-        {
-            printf("AST is NULL\n");
-        }
-        option = rpn;
         return 0;
     }
     | QUIT EOL {                                                                                                                // ✅ | ✅ 
@@ -137,11 +120,11 @@ calc: exp EOL {                                                                 
         return 0;
     }
     | SHOW SETTINGS SEMICOLON EOL {                                                                                             // ✅ | ✅ 
-        option = show_settings;
+        showSettings(settings);    
         return 0;
     }
     | RESET SETTINGS SEMICOLON EOL {                                                                                            // ✅ | ✅ 
-        option = reset_settings;
+        setDefaultSettings(settings);        
         return 0;
     }
     | SET H_VIEW float COLON float SEMICOLON EOL {                                                                              // ✅ | ✅
@@ -152,8 +135,7 @@ calc: exp EOL {                                                                 
 
         settings->h_view_lo = $3;
         settings->h_view_hi = $5;
-
-        option = set_h_view;
+        
         return 0;
     }
     | SET V_VIEW float COLON float SEMICOLON EOL {                                                                              // ✅ | ✅
@@ -164,27 +146,25 @@ calc: exp EOL {                                                                 
         
         settings->v_view_lo = $3;
         settings->v_view_hi = $5;
-
-        option = set_v_view;
+        
         return 0;
     }
-    | SET AXIS ON SEMICOLON EOL {                                                                                               // ✅ | ⏳
+    | SET AXIS ON SEMICOLON EOL {                                                                                               // ✅ | ✅ 
         settings->draw_axis = 1;
-
-        option = set_axis_on;
+        
         return 0;
     }
-    | SET AXIS OFF SEMICOLON EOL {                                                                                              // ✅ | ⏳
+    | SET AXIS OFF SEMICOLON EOL {                                                                                              // ✅ | ✅ 
         settings->draw_axis = 0;
-
-        option = set_axis_off;
+        
         return 0;
     }
-    | PLOT SEMICOLON EOL {                                                                                                      // ⏳ | ⏳
-        option = plot;
+    | PLOT SEMICOLON EOL {                                                                                                      // ⏳ | ⏳        
+        if(!functionInserted) {
+            printf("\nNo Function defined!\n\n");
+        }
         return 0;
-    } PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ⏳ | ⏳
-        option = plot_fn;
+    } PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ⏳ | ⏳        
         return 0;
     }
     | SET INTEGRAL_STEPS int SEMICOLON EOL {                                                                                    // ✅ | ✅
@@ -193,32 +173,32 @@ calc: exp EOL {                                                                 
             YYERROR;
         }
         settings->integral_steps = $3;
-
-        option = set_integral_steps;
+        
         return 0;
     }
-    | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ⏳ | ⏳
-        option = integrate;
+    | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ⏳ | ⏳        
+        AST = $7;
+        functionInserted = 1;
+        if(AST)
+        {
+            printf("\n%6f\n\n", integrate($3, $5, AST, settings));
+        }
         return 0;
     }
-    | MATRIX ASSIGN L_SQUARE_BRACKET L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix R_SQUARE_BRACKET SEMICOLON EOL {  // ⏳ | ⏳
-        option = matrix;
+    | MATRIX ASSIGN L_SQUARE_BRACKET L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix R_SQUARE_BRACKET SEMICOLON EOL {  // ⏳ | ⏳        
         return 0;
     }
-    | SHOW MATRIX SEMICOLON EOL {                                                                                               // ⏳ | ⏳
-        option = show_matrix;
+    | SHOW MATRIX SEMICOLON EOL {                                                                                               // ⏳ | ⏳        
         return 0;
     }
-    | SOLVE DETERMINANT SEMICOLON EOL {                                                                                         // ⏳ | ⏳
-        option = solve_determinant;
+    | SOLVE DETERMINANT SEMICOLON EOL {                                                                                         // ⏳ | ⏳        
         return 0;
     }
-    | SOLVE LINEAR_SYSTEM SEMICOLON EOL {                                                                                       // ⏳ | ⏳
-        option = solve_linear_system;
+    | SOLVE LINEAR_SYSTEM SEMICOLON EOL {                                                                                       // ⏳ | ⏳        
         return 0;
     }
     | ABOUT SEMICOLON EOL {                                                                                                     // ✅ | ✅
-        option = about;
+        printAbout();        
         return 0;
     }
 ;
@@ -237,11 +217,11 @@ matrixAux: COMMA float matrixAux {
 
 exp: factor { $$ = $1; }
     | exp PLUS factor {
-        TreeNode* aux = createNode(PLUS, 0.0, $1, $3);
+        TreeNode* aux = createNode(ADD, 0.0, $1, $3);
         $$ = aux;
     }
     | exp MINUS factor {
-        TreeNode* aux = createNode(MINUS, 0.0, $1, $3);
+        TreeNode* aux = createNode(SUB, 0.0, $1, $3);
         $$ = aux;
     }
 ;
@@ -413,24 +393,15 @@ int main() {
         printf(">");
         yyparse();
     
-        switch (option) {
-            case quit:
-                return 0;
-            case show_settings:
-                showSettings(settings);
-                break;
-            case reset_settings:
-                setDefaultSettings(settings);
-                break;
-            case about:
-                printAbout();
-                break;
-            case rpn:
-                printf("\n");
-            default:
-                break;
-        }
-        // printf("\n");
+        // switch (option) {
+        //     case quit:
+        //         return 0;
+        //     case rpn:
+        //         printf("\n");
+        //     default:
+        //         break;
+        // }
+        // // printf("\n");
     } while(option != quit);
     
     return 0;

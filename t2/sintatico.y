@@ -30,6 +30,13 @@
     int error = -1;
     int quit = 0;
     int functionInserted = 0;
+    int matrixInserted = 0;
+
+    int largura, larguraMax, altura = 1;
+    int xMatrix, yMatrix, wMatrix, hMatrix;
+    int inicio = 1;
+
+    float matrixX[10][10];
 
     void printAbout();
 
@@ -159,7 +166,7 @@ calc: exp EOL {                                                                 
         
         return 0;
     }
-    | PLOT SEMICOLON EOL {                                                                                                      // ⏳ | ✅         
+    | PLOT SEMICOLON EOL {                                                                                                      // ✅ | ✅        
         if(!functionInserted) {
             printf("\nNo Function defined!\n\n");
             return 0;
@@ -167,7 +174,7 @@ calc: exp EOL {                                                                 
         plot(AST, settings);
         return 0;
     }
-    | PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ⏳ | ✅         
+    | PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ✅ | ✅        
         AST = $3;
         functionInserted = 1;
         if(AST) {
@@ -186,19 +193,43 @@ calc: exp EOL {                                                                 
     }
     | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ✅ | ✅       
         AST = $7;
+        if($3 >= $5) {
+            yyerror(error_integrate);
+            YYERROR;
+        }
         if(AST)
         {
             printf("\n%6f\n\n", integrate($3, $5, AST, settings));
         }
         return 0;
     }
-    | MATRIX ASSIGN L_SQUARE_BRACKET L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix R_SQUARE_BRACKET SEMICOLON EOL {  // ⏳ | ⏳        
+    | MATRIX ASSIGN L_SQUARE_BRACKET L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix R_SQUARE_BRACKET SEMICOLON EOL {  // ⏳ | ⏳       
+        matrixX[0][0] = $5;
+        wMatrix = larguraMax;
+        hMatrix = altura;
+        altura = 1;
+        larguraMax = 1;
+        int i,j;
+        for(i=0;i<hMatrix;i++) {
+            for(j=0;j<wMatrix;j++) {
+                printf("%.6f ", matrixX[i][j]);
+            }
+            printf("\n");
+        }
         return 0;
     }
-    | SHOW MATRIX SEMICOLON EOL {                                                                                               // ⏳ | ⏳        
+    | SHOW MATRIX SEMICOLON EOL {                                                                                               // ⏳ | ✅        
+        if(!matrixInserted) {
+            printf("\nNo Matrix defined!\n\n");
+            return 0;
+        }
         return 0;
     }
-    | SOLVE DETERMINANT SEMICOLON EOL {                                                                                         // ⏳ | ⏳        
+    | SOLVE DETERMINANT SEMICOLON EOL {                                                                                         // ⏳ | ✅       
+        if(!matrixInserted) {
+            printf("\nNo Matrix defined!\n\n");
+            return 0;
+        }
         return 0;
     }
     | SOLVE LINEAR_SYSTEM SEMICOLON EOL {                                                                                       // ⏳ | ⏳        
@@ -209,14 +240,14 @@ calc: exp EOL {                                                                 
         return 0;
     }
 ;
-
+// [1,2, 1, 4], [3,4,5,5,6,2], [6,12] ];    
 matrix: COMMA L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix {
     }
     | {}
 ;
 
 matrixAux: COMMA float matrixAux {
-
+    
     }
     | {}
 ;
@@ -395,6 +426,13 @@ int main() {
     //     yydebug = 1;
     // #endif
     settings = createSettings();
+    
+    int i,j;
+    for(i=0;i<10;i++) {
+        for(j=0;j<10;j++) {
+            matrixX[i][j] = 0.0;
+        }
+    }
 
     do {
         // if(option != error)

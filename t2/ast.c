@@ -43,6 +43,12 @@ void RPN_Walk(TreeNode* aux) {
 int stackCount;
 float stack[1000];
 
+float absolute(float value) {
+	if(value < 0)
+		return -value;
+	return value;
+}
+
 void calculateAux(TreeNode* aux, float var) {
 	if(aux)
 	{
@@ -61,7 +67,7 @@ void calculateAux(TreeNode* aux, float var) {
 			case SEN: { stack[stackCount-1] = sin(stack[stackCount-1]); break; }
 			case COS: { stack[stackCount-1] = cos(stack[stackCount-1]); break; }
 			case TAN: { stack[stackCount-1] = tan(stack[stackCount-1]); break; }
-			case ABS: { stack[stackCount-1] = fabs(stack[stackCount-1]); break; }
+			case ABS: { stack[stackCount-1] = absolute(stack[stackCount-1]); break; }
 			case NUM_INTEGER: { stack[stackCount] = aux->value; stackCount++; };break;
 			case NUM_REAL: { stack[stackCount] = aux->value; stackCount++; };break;
 			case VARIABLE: { stack[stackCount] = var; stackCount++; };break;
@@ -105,4 +111,54 @@ float integrate(float inf_lim, float sup_lim, TreeNode* aux, Settings* settings)
 	}
 
 	return result;
+}
+
+float plot(TreeNode* aux, Settings* settings) {
+	char display[25][80];
+	int i, j;
+	float k;
+	float result;
+	int xDisplay = 0, yDisplay;
+
+	for(i=0; i < 25; i++) {
+		for(j=0; j < 80; j++) {
+			display[i][j] = ' ';
+		}
+	}
+
+	if(settings->draw_axis) {
+		for(i=0; i < 25; i++) {
+			display[i][39] = '|';
+		}
+
+		for(j=0; j < 80; j++) {
+			display[12][j] = '-';
+		}
+		display[12][39] = '*';
+	}
+
+	for(k = settings->h_view_lo; k< settings->h_view_hi; k = k + ((settings->h_view_hi + absolute(settings->h_view_lo)) / 80)) {
+		if(xDisplay >= 80)
+			break;
+
+		result = calculate(aux, k);
+		
+		yDisplay = 12 - round(result/((settings->v_view_hi + absolute(settings->v_view_lo)) / 25));
+
+		if(yDisplay < 0 || yDisplay > 24) {
+			xDisplay ++;
+			continue;
+		}
+
+		display[yDisplay][xDisplay] = '*';
+		xDisplay++;
+	}
+
+	for(i=0; i < 25; i++) {
+		for(j=0; j < 80; j++) {
+			printf("%c", display[i][j]);
+		}
+	}	
+
+
 }

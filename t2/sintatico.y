@@ -159,12 +159,20 @@ calc: exp EOL {                                                                 
         
         return 0;
     }
-    | PLOT SEMICOLON EOL {                                                                                                      // ⏳ | ⏳        
+    | PLOT SEMICOLON EOL {                                                                                                      // ⏳ | ✅         
         if(!functionInserted) {
             printf("\nNo Function defined!\n\n");
+            return 0;
         }
+        plot(AST, settings);
         return 0;
-    } PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ⏳ | ⏳        
+    }
+    | PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ⏳ | ✅         
+        AST = $3;
+        functionInserted = 1;
+        if(AST) {
+            plot(AST, settings);
+        }
         return 0;
     }
     | SET INTEGRAL_STEPS int SEMICOLON EOL {                                                                                    // ✅ | ✅
@@ -176,9 +184,8 @@ calc: exp EOL {                                                                 
         
         return 0;
     }
-    | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ⏳ | ⏳        
+    | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ✅ | ✅       
         AST = $7;
-        functionInserted = 1;
         if(AST)
         {
             printf("\n%6f\n\n", integrate($3, $5, AST, settings));
@@ -339,6 +346,7 @@ void yyerror(char *s) {
             option = error;
 			break;
         case EOL:
+            printf("Erro de Sintaxe: [$]\n\n");
             break;
         default:
             if(!strcmp(s, "syntax error"))

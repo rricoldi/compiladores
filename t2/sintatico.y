@@ -14,13 +14,13 @@
     int linhas = 25;
     int colunas = 80;
 
-    char error_matrix[] = "ERROR: Matrix limits out of boundaries.";
-    char error_v_view[] = "ERROR: v_view_lo must be smaller than v_view_hi";
-    char error_h_view[] = "ERROR: h_view_lo must be smaller than h_view_hi";
-    char error_set_int[] = "ERROR: integral_steps must be a positive non-zero integer";
-    char error_integrate[] = "ERROR: lower limit must be smaller than upper limit";
-    char error_determinant[] = "Matrix format incorrect!";
-    char error_linear[] = "Matrix format incorrect!";
+    char error_matrix[] = "\n\nERROR: Matrix limits out of boundaries.";
+    char error_v_view[] = "\nERROR: v_view_lo must be smaller than v_view_hi";
+    char error_h_view[] = "\nERROR: h_view_lo must be smaller than h_view_hi";
+    char error_set_int[] = "\nERROR: integral_steps must be a positive non-zero integer";
+    char error_integrate[] = "\nERROR: lower limit must be smaller than upper limit";
+    char error_determinant[] = "\nMatrix format incorrect!";
+    char error_linear[] = "\nMatrix format incorrect!";
 
 
     TreeNode* AST = NULL;
@@ -33,13 +33,10 @@
     int matrixInserted = 0;
 
     int largura, larguraMax, altura = 1;
-    int xMatrix, yMatrix, wMatrix, hMatrix;
+    int xMatrix, yMatrix;
     int inicio = 1;
 
-    float matrixX[10][10];
-
     void printAbout();
-
 %}
 
 %union{
@@ -100,6 +97,8 @@
 %type <ast> operator
 %type <ast> signed
 %type <ast> function
+%type <ast> matrix
+%type <ast> matrixAux
 %type <ast> delimit
 %type <real> float
 %type <integer> int
@@ -166,7 +165,7 @@ calc: exp EOL {                                                                 
         
         return 0;
     }
-    | PLOT SEMICOLON EOL {                                                                                                      // ✅ | ✅        
+    | PLOT SEMICOLON EOL {                                                                                                      // ✅ | ✅ 
         if(!functionInserted) {
             printf("\nNo Function defined!\n\n");
             return 0;
@@ -174,7 +173,7 @@ calc: exp EOL {                                                                 
         plot(AST, settings);
         return 0;
     }
-    | PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ✅ | ✅        
+    | PLOT L_PAREN exp R_PAREN SEMICOLON EOL {                                                                                  // ✅ | ✅ 
         AST = $3;
         functionInserted = 1;
         if(AST) {
@@ -191,65 +190,85 @@ calc: exp EOL {                                                                 
         
         return 0;
     }
-    | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ✅ | ✅       
-        AST = $7;
+    | INTEGRATE L_PAREN float COLON float COMMA exp R_PAREN SEMICOLON EOL {                                                     // ✅ | ✅
+        AST_TEMP = $7;
         if($3 >= $5) {
             yyerror(error_integrate);
             YYERROR;
         }
-        if(AST)
+        if(AST_TEMP)
         {
-            printf("\n%6f\n\n", integrate($3, $5, AST, settings));
+            printf("\n%6f\n\n", integrate($3, $5, AST_TEMP, settings));
         }
+        Delete_Tree(AST_TEMP);
+
         return 0;
     }
-    | MATRIX ASSIGN L_SQUARE_BRACKET L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix R_SQUARE_BRACKET SEMICOLON EOL {  // ⏳ | ⏳       
-        matrixX[0][0] = $5;
-        wMatrix = larguraMax;
-        hMatrix = altura;
-        altura = 1;
-        larguraMax = 1;
-        int i,j;
-        for(i=0;i<hMatrix;i++) {
-            for(j=0;j<wMatrix;j++) {
-                printf("%.6f ", matrixX[i][j]);
-            }
-            printf("\n");
+    | MATRIX ASSIGN L_SQUARE_BRACKET L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix R_SQUARE_BRACKET SEMICOLON EOL {  // ✅ | ✅
+        TreeNode* aux = createNode(VARIABLE, $5, $6, $8);
+        int error = createMatrix(aux);
+
+        if(error) {
+            yyerror(error_matrix);
+            YYERROR;
+        } else {
+            matrixInserted = 1;
         }
+
         return 0;
     }
-    | SHOW MATRIX SEMICOLON EOL {                                                                                               // ⏳ | ✅        
+    | SHOW MATRIX SEMICOLON EOL {                                                                                               // ✅ | ✅ 
         if(!matrixInserted) {
             printf("\nNo Matrix defined!\n\n");
             return 0;
         }
+
+        showMatrix();
         return 0;
     }
-    | SOLVE DETERMINANT SEMICOLON EOL {                                                                                         // ⏳ | ✅       
+    | SOLVE DETERMINANT SEMICOLON EOL {                                                                                         // ✅ | ✅
         if(!matrixInserted) {
             printf("\nNo Matrix defined!\n\n");
             return 0;
         }
+        int error = solveDeterminant();
+        if(error) {
+            yyerror(error_determinant);
+            YYERROR;
+        }
         return 0;
     }
-    | SOLVE LINEAR_SYSTEM SEMICOLON EOL {                                                                                       // ⏳ | ⏳        
+    | SOLVE LINEAR_SYSTEM SEMICOLON EOL {                                                                                       // ✅ | ✅
+        if(!matrixInserted) {
+            printf("\nNo Matrix defined!\n\n");
+            return 0;
+        }
+        int error = solveLinearSystem();
+        if(error) {
+            yyerror(error_linear);
+            YYERROR;
+        }
         return 0;
     }
     | ABOUT SEMICOLON EOL {                                                                                                     // ✅ | ✅
+        
         printAbout();        
         return 0;
     }
 ;
-// [1,2, 1, 4], [3,4,5,5,6,2], [6,12] ];    
+ 
 matrix: COMMA L_SQUARE_BRACKET float matrixAux R_SQUARE_BRACKET matrix {
+        TreeNode* aux = createNode(VARIABLE, $3, $4, $6);
+        $$ = aux;
     }
-    | {}
+    | { $$ = NULL; }
 ;
 
 matrixAux: COMMA float matrixAux {
-    
+        TreeNode* aux = createNode(VARIABLE, $2, NULL, $3);
+        $$ = aux;
     }
-    | {}
+    | { $$ = NULL; }
 ;
 
 
@@ -377,7 +396,6 @@ void yyerror(char *s) {
             option = error;
 			break;
         case EOL:
-            printf("Erro de Sintaxe: [$]\n\n");
             break;
         default:
             if(!strcmp(s, "syntax error"))
@@ -422,32 +440,11 @@ void printAbout() {
 }
 
 int main() {
-    // #ifdef YYDEBUG
-    //     yydebug = 1;
-    // #endif
     settings = createSettings();
-    
-    int i,j;
-    for(i=0;i<10;i++) {
-        for(j=0;j<10;j++) {
-            matrixX[i][j] = 0.0;
-        }
-    }
 
     do {
-        // if(option != error)
         printf(">");
         yyparse();
-    
-        // switch (option) {
-        //     case quit:
-        //         return 0;
-        //     case rpn:
-        //         printf("\n");
-        //     default:
-        //         break;
-        // }
-        // // printf("\n");
     } while(option != quit);
     
     return 0;

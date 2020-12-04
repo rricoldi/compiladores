@@ -1,9 +1,9 @@
 FLEX=flex
 BISON=bison
 CC=gcc
-FLAGS= -lm
+FLAGS= -lm -g
 
-PROGRAMA = sintatico
+PROGRAMA = dcmat
 LEXICO = lexico.l
 SINTATICO = sintatico.y
 
@@ -19,4 +19,4 @@ clean:
 	rm -f *.tab.h
 	rm -f *.o
 	rm -f *.exe
-	rm -f sintatico
+	rm -f dcmat

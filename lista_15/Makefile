@@ -4,7 +4,7 @@ CC=gcc
 
 FLAGS=-g
 
-PROGRAMA = sintatico
+PROGRAMA = l15e1
 LEXICO = lexico.l
 SINTATICO = sintatico.y
 
@@ -20,4 +20,4 @@ clean:
 	rm -f *.tab.h
 	rm -f *.o
 	rm -f *.exe
-	rm -f sintatico
+	rm -f $(PROGRAMA)
